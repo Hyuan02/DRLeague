@@ -15,6 +15,17 @@ public class Constants : MonoBehaviour
     public float NormalLength => _normalLength;
 
 
+    public readonly float MaxSpeed = 14.1f;
+    public readonly float IntermediateSpeed = 14.0f;
+
+    public const float BREAK_STRENGTH = 35;
+
+    public const float BrakeAcceleration = 5.25f;
+
+    public const float wheelsRevolutionSpeed = 13f;
+
+
+
     public static Constants Instance;
 
     private void Awake()

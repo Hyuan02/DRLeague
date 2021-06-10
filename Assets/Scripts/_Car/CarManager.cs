@@ -1,23 +1,24 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using System.Linq;
 
 [RequireComponent(typeof(Rigidbody))]
 public class CarManager : MonoBehaviour
 {
-    internal bool isAllWheelsSurface = false;
-    internal bool isCanDrive = false;
-    internal bool isBodySurface = false;
-
-
-
+   
     Rigidbody _rBody;
 
     [SerializeField]
     internal Transform cogLow;
 
     internal CarStates carState;
+
+    [SerializeField]
+    internal CarStats stats;
+
+    [SerializeField]
+    SphereColliders[] colliders;
 
 
     // Start is called before the first frame update
@@ -28,36 +29,39 @@ public class CarManager : MonoBehaviour
         _rBody.maxAngularVelocity = Constants.Instance.MaxAngularVelocity;
     }
 
-    // Update is called once per frame
-    void Update()
+
+    private void FixedUpdate()
     {
-        
+        DetermineCarState();
+        UpdateStats();
     }
 
 
     void DetermineCarState()
     {
-        if (isAllWheelsSurface)
+        stats.wheelsSurface = colliders.Count(e => e.isTouchingSurface);
+
+        if (stats.isAllWheelsSurface)
         {
             carState = CarStates.AllWheelsSurface;
         }
 
-        if(!isAllWheelsSurface && !isBodySurface)
+        if(!stats.isAllWheelsSurface && !stats.isBodySurface)
         {
             carState = CarStates.SomeWheelsSurface;
         }
 
-        if (isBodySurface && !isAllWheelsSurface)
+        if (stats.isBodySurface && !stats.isAllWheelsSurface)
         {
             carState = CarStates.BodySideGround;
         }
             
-        if(isAllWheelsSurface && Vector3.Dot(Vector3.up, transform.up) > Constants.Instance.NormalLength)
+        if(stats.isAllWheelsSurface && Vector3.Dot(Vector3.up, transform.up) > Constants.Instance.NormalLength)
         {
             carState = CarStates.AllWheelsGround;
         }
 
-        if (isAllWheelsSurface && Vector3.Dot(Vector3.up, transform.up) < -Constants.Instance.NormalLength)
+        if (stats.isAllWheelsSurface && Vector3.Dot(Vector3.up, transform.up) < -Constants.Instance.NormalLength)
         {
             carState = CarStates.AllWheelsGround;
         }
@@ -67,6 +71,20 @@ public class CarManager : MonoBehaviour
         //    carState = CarStates.Air;
         //}
 
-        isCanDrive = carState == CarStates.AllWheelsSurface || carState == CarStates.AllWheelsGround;
+        stats.isCanDrive = carState == CarStates.AllWheelsSurface || carState == CarStates.AllWheelsGround;
+    }
+
+    internal float GetForwardSignal()
+    {
+        Debug.Log("Got forward signal!");
+        return InputController.forwardController;
+    }
+
+    internal float GetTurnSignal() => InputController.turnController;
+
+    private void UpdateStats()
+    {
+        stats.forwardSpeed = Vector3.Dot(_rBody.velocity, transform.forward);
+        stats.forwardSpeed = (float)System.Math.Round(stats.forwardSpeed, 2);
     }
 }

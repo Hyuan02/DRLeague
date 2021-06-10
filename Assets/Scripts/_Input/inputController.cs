@@ -1,7 +1,9 @@
 using UnityEngine;
 
-public static class inputController
+public static class InputController
 {
     public static float forwardController =>
-        Input.GetAxis("Vertical");    
+        Input.GetAxis("Vertical");
+    public static float turnController =>
+        Input.GetAxis("Horizontal");
 }
