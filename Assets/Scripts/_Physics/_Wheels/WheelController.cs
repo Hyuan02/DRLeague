@@ -39,10 +39,12 @@ public class WheelController : MonoBehaviour
         _rBody = this.GetComponentInParent<Rigidbody>();
         _manager = this.GetComponentInParent<CarManager>();
         _controller = this.GetComponentInParent<GroundController>();
+        _wheelRadius = transform.localScale.z / 2;
     }
 
     private void FixedUpdate()
     {
+        UpdateWheelState();
         if (!_manager.stats.isCanDrive) return;
 
         ApplyForwardForce(_manager.stats.forwardAcceleration/4);
@@ -51,22 +53,25 @@ public class WheelController : MonoBehaviour
         SimulateDrag();
     }
 
-    private void RotateWheels(float steerAngle)
+    internal void RotateWheels(float steerAngle)
     {
 
-        Debug.Log(steerAngle);
+        Debug.Log("Steer angle is: " + steerAngle);
         if(WheelPosition.FL == _wheelPosition || WheelPosition.FR == _wheelPosition)
         {
+
+            Debug.Log("Applying force");
             transform.localRotation = Quaternion.Euler(Vector3.up * steerAngle);
         }
 
         if (_wheelMesh)
         {
             Debug.Log("Applying rot");
-
+            Debug.Log(transform.localEulerAngles);
             _wheelMesh.localRotation = transform.localRotation;
+            Debug.Log("Rot mesh" + _wheelMesh.localEulerAngles);
             _meshRevolutionAngle += (Time.deltaTime * transform.InverseTransformDirection(_wheelVelocity).z) /
-              (2 * Mathf.PI * _wheelRadius) * 360f;
+              (2 * Mathf.PI * _wheelRadius) * 360;
 
             _wheelMesh.Rotate(Vector3.right, _meshRevolutionAngle * 1.3f);
         }
@@ -103,14 +108,15 @@ public class WheelController : MonoBehaviour
         _rBody.AddForce(-dragForce * transform.forward, ForceMode.Acceleration);
     }
 
-    //private void UpdateWheelState()
-    //{
-    //    _wheelContactPoint = transform.position - transform.up * _wheelRadius;
-    //    _wheelVelocity = _rBody.GetPointVelocity(_wheelContactPoint);
-    //    _wheelForwardVelocity = Vector3.Dot(_wheelVelocity, transform.forward);
-    //    _wheelLateralVelocity = Vector3.Dot(_wheelVelocity, transform.right);
+    private void UpdateWheelState()
+    {
+        _wheelContactPoint = transform.position - transform.up * _wheelRadius;
+        _wheelVelocity = _rBody.GetPointVelocity(_wheelContactPoint);
+        _wheelForwardVelocity = Vector3.Dot(_wheelVelocity, transform.forward);
+        _wheelLateralVelocity = Vector3.Dot(_wheelVelocity, transform.right);
 
-
-    //}
+        _wheelAcceleration = (_wheelVelocity - _lastWheelVelocity) * Time.fixedTime;
+        _lastWheelVelocity = _wheelVelocity;
+    }
 
 }

@@ -10,17 +10,22 @@ public class GroundController : MonoBehaviour
     private Rigidbody _rBody;
     private CarManager _instance;
 
+    private WheelController[] _wheels;
+
     private void Start()
     {
         _rBody = this.GetComponent<Rigidbody>();
         _instance = this.GetComponent<CarManager>();
+        _wheels = this.GetComponentsInChildren<WheelController>();
     }
 
     private void FixedUpdate()
     {
-        ApplyDownForce();
+        //ApplyDownForce();
         _instance.stats.forwardAcceleration = CalcForwardForce(_instance.GetForwardSignal());
         _instance.stats.currentSteerAngle = CalculateSteerAngle(_instance.GetTurnSignal());
+        //ApplyRotOnWheels();
+
     }
 
     private void ApplyDownForce()
@@ -33,6 +38,14 @@ public class GroundController : MonoBehaviour
     {
         float forwardAcceleration = CalcForwardForce(_instance.GetForwardSignal());
         
+    }
+
+    private void ApplyRotOnWheels()
+    {
+        foreach(WheelController wheel in _wheels)
+        {
+            wheel.RotateWheels(_instance.stats.currentSteerAngle);
+        }
     }
 
     private float CalcForwardForce(float throttleInput)
@@ -60,7 +73,7 @@ public class GroundController : MonoBehaviour
         {
             throttle = 0;
         }
-        else if(speed > Constants.Instance.IntermediateSpeed && speed < Constants.Instance.MaxSpeed)
+        else if(speed > Constants.Instance.IntermediateSpeed)
         {
             throttle = RoboUtils.Scale(14f, 14.1f, 1.6f, 0, speed);
         }
