@@ -22,7 +22,7 @@ public class GroundController : MonoBehaviour
     private void FixedUpdate()
     {
         //ApplyDownForce();
-        _instance.stats.forwardAcceleration = CalcForwardForce(_instance.GetForwardSignal());
+        _instance.stats.forwardAcceleration = CalcForwardForce(_instance.GetForwardSignal(), _instance.GetBoostSignal());
         _instance.stats.currentSteerAngle = CalculateSteerAngle(_instance.GetTurnSignal());
         //ApplyRotOnWheels();
 
@@ -34,12 +34,6 @@ public class GroundController : MonoBehaviour
             _rBody.AddForce(-transform.up * 5, ForceMode.Acceleration);
     }
 
-    private void throttleRoutine()
-    {
-        float forwardAcceleration = CalcForwardForce(_instance.GetForwardSignal());
-        
-    }
-
     private void ApplyRotOnWheels()
     {
         foreach(WheelController wheel in _wheels)
@@ -48,13 +42,12 @@ public class GroundController : MonoBehaviour
         }
     }
 
-    private float CalcForwardForce(float throttleInput)
+    private float CalcForwardForce(float throttleInput, bool boostInput)
     {
         // Throttle
         float forwardAcceleration = 0;
 
-        //TODO BOOST CASE
-        forwardAcceleration = throttleInput * GetForwardAcceleration(_instance.stats.forwardSpeedAbs);
+        forwardAcceleration = (boostInput? 1 : throttleInput) * GetForwardAcceleration(_instance.stats.forwardSpeedAbs);
 
         if (_instance.stats.forwardSpeedSign != Mathf.Sign(throttleInput) && throttleInput != 0)
         {

@@ -77,10 +77,12 @@ public class CarManager : MonoBehaviour
     internal float GetForwardSignal()
     {
         Debug.Log("Got forward signal!");
-        return InputController.forwardController;
+        return InputController.forwardInput;
     }
 
-    internal float GetTurnSignal() => InputController.turnController;
+    internal float GetTurnSignal() => InputController.turnInput;
+
+    internal bool GetBoostSignal() => InputController.boostInput;
 
     private void UpdateStats()
     {
