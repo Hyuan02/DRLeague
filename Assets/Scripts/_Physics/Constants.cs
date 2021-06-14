@@ -25,13 +25,23 @@ public class Constants : MonoBehaviour
 
     public const float wheelsRevolutionSpeed = 13f;
 
+
+    //boost
     public const float BoostForce = 9.91f;
 
     public const float BoostForceMultiplier = 1f;
 
-
+    //particles
     public const int SupersonicThreshold = 22;
 
+
+    //Jumping
+    public const float JumpForceMultiplier = 1f;
+    public const int UpForce = 3;
+    public const int UpTorque = 50;
+
+    public const float InitalJumpTorque = 2.92f;
+    public const float MidJumpTorque = 14.58f;
 
 
     public static Constants Instance;

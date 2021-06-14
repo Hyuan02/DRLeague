@@ -8,4 +8,8 @@ public static class InputController
         Input.GetAxis("Horizontal");
     public static bool boostInput =>
         Input.GetMouseButton(0);
+    public static bool jumpInput =>
+        Input.GetMouseButtonDown(1);
+    public static bool HeldJumpInput =>
+        Input.GetMouseButton(1);
 }

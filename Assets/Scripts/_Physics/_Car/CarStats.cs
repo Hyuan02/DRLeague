@@ -29,4 +29,9 @@ public struct CarStats
     public float turnRadiusCoefficient;
     public float currentSteerAngle;
 
+    [Header("Jump")]
+    public bool canFirstJump;
+    public bool isJumping;
+    public bool canKeepJumping;
+
 }

@@ -84,6 +84,10 @@ public class CarManager : MonoBehaviour
 
     internal bool GetBoostSignal() => InputController.boostInput;
 
+    internal bool GetJumpSignal() => InputController.jumpInput;
+
+    internal bool GetHeldJumpSignal() => InputController.HeldJumpInput;
+
     private void UpdateStats()
     {
         stats.forwardSpeed = Vector3.Dot(_rBody.velocity, transform.forward);
