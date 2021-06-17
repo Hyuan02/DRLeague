@@ -16,6 +16,11 @@ public class BoostingController : MonoBehaviour
 
     }
 
+    private void FixedUpdate()
+    {
+        UseBoost();
+    }
+
 
     void UseBoost()
     {

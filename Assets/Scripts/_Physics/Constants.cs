@@ -44,6 +44,16 @@ public class Constants : MonoBehaviour
     public const float MidJumpTorque = 14.58f;
 
 
+    //AIR
+    public const float Torque_Roll = 36.07956616966136f;
+    public const float Torque_Pitch = 12.14599781908070f;
+    public const float Torque_Yaw = 8.91962804287785f;
+
+    public const float Drag_Roll = -4.47166302201591f;
+    public const float Drag_Pitch = -2.798194258050845f;
+    public const float Drag_Yaw = -1.886491900437232f;
+
+
     public static Constants Instance;
 
     private void Awake()
