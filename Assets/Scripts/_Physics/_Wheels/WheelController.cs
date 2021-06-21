@@ -55,8 +55,6 @@ public class WheelController : MonoBehaviour
 
     internal void RotateWheels(float steerAngle)
     {
-
-        Debug.Log("Steer angle is: " + steerAngle);
         if(WheelPosition.FL == _wheelPosition || WheelPosition.FR == _wheelPosition)
         {
 
@@ -66,10 +64,7 @@ public class WheelController : MonoBehaviour
 
         if (_wheelMesh)
         {
-            Debug.Log("Applying rot");
-            Debug.Log(transform.localEulerAngles);
             _wheelMesh.localRotation = transform.localRotation;
-            Debug.Log("Rot mesh" + _wheelMesh.localEulerAngles);
             _meshRevolutionAngle += (Time.deltaTime * transform.InverseTransformDirection(_wheelVelocity).z) /
               (2 * Mathf.PI * _wheelRadius) * 360;
 

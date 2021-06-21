@@ -20,6 +20,11 @@ public class CarManager : MonoBehaviour
     [SerializeField]
     SphereColliders[] colliders;
 
+    [SerializeField]
+    internal Teams _team;
+
+    [SerializeField]
+    internal uint id;
 
     // Start is called before the first frame update
     void Start()

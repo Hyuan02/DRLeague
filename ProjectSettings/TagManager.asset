@@ -3,7 +3,14 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - CarCameraTarget
+  - BodyCollider
+  - SphereCollider
+  - Car
+  - Ground
+  - BlueGoal
+  - RedGoal
   layers:
   - Default
   - TransparentFX
