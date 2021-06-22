@@ -13,7 +13,7 @@ public class BallManager : MonoBehaviour
         _defaultBallPosition = this.transform.position;
     }
 
-    private void ResetBall()
+    public void ResetBall()
     {
         transform.SetPositionAndRotation(_defaultBallPosition, Quaternion.identity);
         _rBody.velocity = Vector3.zero;

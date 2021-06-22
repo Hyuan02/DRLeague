@@ -5,9 +5,8 @@ using UnityEngine;
 public class BallInteractor : MonoBehaviour
 {
     [SerializeField]
-    private uint _lastTouchedId;
-    [SerializeField]
-    private Teams _lastTouchedTeam;
+    public TeamInfo _lastTouchedInfo { get; private set; }
+   
 
     private void OnTriggerEnter(Collider other)
     {
@@ -20,7 +19,6 @@ public class BallInteractor : MonoBehaviour
     }
 
     void CollisionWithCar(CarManager car) {
-        _lastTouchedId = car.id;
-        _lastTouchedTeam = car._team;
+        _lastTouchedInfo = car.info;
     }
 }

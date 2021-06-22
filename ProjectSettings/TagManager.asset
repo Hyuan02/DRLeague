@@ -11,6 +11,7 @@ TagManager:
   - Ground
   - BlueGoal
   - RedGoal
+  - Ball
   layers:
   - Default
   - TransparentFX
