@@ -18,7 +18,6 @@ public class SphereColliders : MonoBehaviour
     void FixedUpdate()
     {
         isTouchingSurface = isTouchingGround();
-        Debug.Log(isTouchingSurface);
     }
 
 

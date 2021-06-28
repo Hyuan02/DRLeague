@@ -57,8 +57,6 @@ public class WheelController : MonoBehaviour
     {
         if(WheelPosition.FL == _wheelPosition || WheelPosition.FR == _wheelPosition)
         {
-
-            Debug.Log("Applying force");
             transform.localRotation = Quaternion.Euler(Vector3.up * steerAngle);
         }
 

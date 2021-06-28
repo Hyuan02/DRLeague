@@ -23,6 +23,9 @@ public class CarManager : MonoBehaviour
     [SerializeField]
     internal TeamInfo info;
 
+    [SerializeField]
+    BodyCollider bCollider;
+
    
 
     // Start is called before the first frame update
@@ -44,6 +47,7 @@ public class CarManager : MonoBehaviour
     void DetermineCarState()
     {
         stats.wheelsSurface = colliders.Count(e => e.isTouchingSurface);
+        stats.isBodySurface = bCollider.IsOnGround;
 
         if (stats.isAllWheelsSurface)
         {
@@ -65,22 +69,16 @@ public class CarManager : MonoBehaviour
             carState = CarStates.AllWheelsGround;
         }
 
-        if (stats.isAllWheelsSurface && Vector3.Dot(Vector3.up, transform.up) < -Constants.Instance.NormalLength)
+        if (stats.isBodySurface && Vector3.Dot(Vector3.up, transform.up) < -Constants.Instance.NormalLength)
         {
-            carState = CarStates.AllWheelsGround;
+            carState = CarStates.BodyGroundDead;
         }
-
-        //if (!isBodySurface && numWheelsSurface == 0)
-        //{
-        //    carState = CarStates.Air;
-        //}
 
         stats.isCanDrive = carState == CarStates.AllWheelsSurface || carState == CarStates.AllWheelsGround;
     }
 
     internal float GetForwardSignal()
     {
-        Debug.Log("Got forward signal!");
         return InputController.forwardInput;
     }
 
