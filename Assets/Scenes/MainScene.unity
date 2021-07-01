@@ -849,6 +849,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _boostConsumingRate: 20
+  _boostRecoveringRate: 4
 --- !u!114 &449075433
 MonoBehaviour:
   m_ObjectHideFlags: 0
