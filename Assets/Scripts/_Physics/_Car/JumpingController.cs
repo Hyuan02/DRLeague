@@ -47,8 +47,6 @@ public class JumpingController : MonoBehaviour
             _rBody.AddForce(transform.up * Constants.InitalJumpTorque * Constants.JumpForceMultiplier, ForceMode.VelocityChange);
             _instance.stats.canKeepJumping = true;
             _instance.stats.isJumping = true;
-
-            Debug.Log("Jump ");
         }
 
         if (_instance.GetHeldJumpSignal() && _instance.stats.isJumping && _instance.stats.canKeepJumping && _jumpTimer >= 0.05f && _jumpTimer <= 0.09f)
@@ -57,12 +55,10 @@ public class JumpingController : MonoBehaviour
         }
 
         if (_instance.GetJumpSignal() && _instance.stats.isJumping && _jumpTimer >= 0.1f) {
-            Debug.Log("Adding jump impulse!");
             _rBody.AddForce(transform.up * Constants.InitalJumpTorque * Constants.JumpForceMultiplier, ForceMode.VelocityChange);
         }
 
         if (_instance.GetJumpSignal() && _instance.carState.Equals(CarStates.BodyGroundDead)) {
-            Debug.Log("Turning car up");
             turningCarEffect = true;
 
         }
@@ -102,7 +98,6 @@ public class JumpingController : MonoBehaviour
 
         if((transform.up - Vector3.up).magnitude < 0.1f)
         {
-            Debug.Log("Turned!");
             turningCarEffect = false;
         }
     }

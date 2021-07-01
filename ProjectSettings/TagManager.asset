@@ -12,6 +12,7 @@ TagManager:
   - BlueGoal
   - RedGoal
   - Ball
+  - BallInteractor
   layers:
   - Default
   - TransparentFX

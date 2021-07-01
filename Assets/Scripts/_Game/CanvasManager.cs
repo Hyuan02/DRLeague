@@ -22,15 +22,14 @@ public class CanvasManager : MonoBehaviour
 
     private void SpawnScores()
     {
-        Debug.Log(_manager.mainStats.goalScore.Length);
         for (int i = 0; i < _manager.mainStats.goalScore.Length; i++)
         {
             textElements.Add(Instantiate(_scorePrefab, _scoreboard));
         }
     }
 
-    private void ChangeScores(TeamInfo info)
+    private void ChangeScores(TeamInfo info, GoalInfo goal)
     {
-        Debug.Log("Update goal!");
+        textElements[((int)goal.team)].text = _manager.mainStats.goalScore[((int)goal.team)].ToString();
     }
 }

@@ -32,7 +32,7 @@ public class CarParticleSystem : MonoBehaviour
     }
     private void HandleAnimationBoost()
     {
-        if (_instance.GetBoostSignal()) {
+        if (_instance.GetBoostSignal() && _instance.stats.boostQuantity > 0) {
             if (!_isBoosting)
             {
                 _boostParticles.Play();

@@ -10,12 +10,13 @@ public class BallManager : MonoBehaviour
     private void Start()
     {
         _rBody = this.GetComponent<Rigidbody>();
-        _defaultBallPosition = this.transform.position;
+        _defaultBallPosition = this.transform.localPosition;
     }
 
     public void ResetBall()
     {
-        transform.SetPositionAndRotation(_defaultBallPosition, Quaternion.identity);
+        transform.localPosition = _defaultBallPosition;
+        transform.localRotation = Quaternion.identity;
         _rBody.velocity = Vector3.zero;
         _rBody.angularVelocity = Vector3.zero;
     }

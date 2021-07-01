@@ -12,7 +12,6 @@ public class BallInteractor : MonoBehaviour
     {
 
         if (other.CompareTag("BodyCollider") || other.CompareTag("SphereCollider")) {
-            Debug.Log("Entered");
             CarManager actualCar = other.GetComponentInParent<CarManager>();
             CollisionWithCar(actualCar);
         }

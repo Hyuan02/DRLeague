@@ -8,6 +8,12 @@ public struct TeamInfo {
     public uint id;
 }
 
+[System.Serializable]
+public struct GoalInfo
+{
+    public Teams team;
+}
+
 public enum Teams 
 {
    RED,

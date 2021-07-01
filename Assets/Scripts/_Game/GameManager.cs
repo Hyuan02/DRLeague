@@ -9,7 +9,7 @@ public class GameManager : MonoBehaviour
 
     public GameStats mainStats;
 
-    public Action<TeamInfo> onGoalHappened;
+    public Action<TeamInfo, GoalInfo> onGoalHappened;
 
     private void Awake()
     {
@@ -29,8 +29,8 @@ public class GameManager : MonoBehaviour
             mainStats.TimeSpent -= Time.unscaledDeltaTime;
     }
 
-    private void UpdateTeamScore(TeamInfo info) {
-        mainStats.goalScore[(int)info.team] += 1;
+    private void UpdateTeamScore(TeamInfo info, GoalInfo goal) {
+        mainStats.goalScore[(int)goal.team] += 1;
     }
 
 

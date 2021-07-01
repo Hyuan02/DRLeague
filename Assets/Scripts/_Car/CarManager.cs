@@ -34,6 +34,8 @@ public class CarManager : MonoBehaviour
         _rBody = this.GetComponent<Rigidbody>();
         _rBody.centerOfMass = cogLow.localPosition;
         _rBody.maxAngularVelocity = Constants.Instance.MaxAngularVelocity;
+
+        stats.boostQuantity = 100f;
     }
 
 
