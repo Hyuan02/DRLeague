@@ -6,12 +6,13 @@ using System.Linq;
 [RequireComponent(typeof(Rigidbody))]
 public class CarManager : MonoBehaviour
 {
-   
+
     Rigidbody _rBody;
 
     [SerializeField]
     internal Transform cogLow;
 
+    [SerializeField]
     internal CarStates carState;
 
     [SerializeField]
@@ -26,7 +27,11 @@ public class CarManager : MonoBehaviour
     [SerializeField]
     BodyCollider bCollider;
 
-   
+    [SerializeField]
+    internal bool canMove = true;
+
+    Vector3 _defaultPosition; 
+
 
     // Start is called before the first frame update
     void Start()
@@ -34,6 +39,8 @@ public class CarManager : MonoBehaviour
         _rBody = this.GetComponent<Rigidbody>();
         _rBody.centerOfMass = cogLow.localPosition;
         _rBody.maxAngularVelocity = Constants.Instance.MaxAngularVelocity;
+
+        _defaultPosition = this.transform.position;
 
         stats.boostQuantity = 100f;
     }
@@ -56,7 +63,7 @@ public class CarManager : MonoBehaviour
             carState = CarStates.AllWheelsSurface;
         }
 
-        if(!stats.isAllWheelsSurface && !stats.isBodySurface)
+        if (!stats.isAllWheelsSurface && !stats.isBodySurface)
         {
             carState = CarStates.SomeWheelsSurface;
         }
@@ -65,8 +72,8 @@ public class CarManager : MonoBehaviour
         {
             carState = CarStates.BodySideGround;
         }
-            
-        if(stats.isAllWheelsSurface && Vector3.Dot(Vector3.up, transform.up) > Constants.Instance.NormalLength)
+
+        if (stats.isAllWheelsSurface && Vector3.Dot(Vector3.up, transform.up) > Constants.Instance.NormalLength)
         {
             carState = CarStates.AllWheelsGround;
         }
@@ -79,22 +86,30 @@ public class CarManager : MonoBehaviour
         stats.isCanDrive = carState == CarStates.AllWheelsSurface || carState == CarStates.AllWheelsGround;
     }
 
-    internal float GetForwardSignal()
-    {
-        return InputController.forwardInput;
-    }
+    internal float GetForwardSignal() => canMove ? InputController.forwardInput : 0;
 
-    internal float GetTurnSignal() => InputController.turnInput;
+    internal float GetTurnSignal() => canMove? InputController.turnInput : 0;
 
-    internal bool GetBoostSignal() => InputController.boostInput;
+    internal bool GetBoostSignal() => canMove? InputController.boostInput : false;
 
-    internal bool GetJumpSignal() => InputController.jumpInput;
+    internal bool GetJumpSignal() => canMove? InputController.jumpInput : false;
 
-    internal bool GetHeldJumpSignal() => InputController.HeldJumpInput;
+    internal bool GetHeldJumpSignal() => canMove? InputController.HeldJumpInput : false;
 
     private void UpdateStats()
     {
         stats.forwardSpeed = Vector3.Dot(_rBody.velocity, transform.forward);
         stats.forwardSpeed = (float)System.Math.Round(stats.forwardSpeed, 2);
+    }
+
+
+    public void ResetCarState()
+    {
+        _rBody.velocity = Vector3.zero;
+        _rBody.angularVelocity = Vector3.zero;
+        _rBody.rotation = Quaternion.identity;
+        _rBody.position = this._defaultPosition;
+        stats.forwardSpeed = 0;
+        stats.forwardAcceleration = 0;
     }
 }

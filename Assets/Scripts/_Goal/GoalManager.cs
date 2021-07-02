@@ -10,7 +10,7 @@ public class GoalManager : MonoBehaviour
     [SerializeField]
     BallManager _ball;
 
-    GameManager _instance;
+    RuleManager _instance;
 
     private void Start()
     {
@@ -18,7 +18,7 @@ public class GoalManager : MonoBehaviour
             _interactor.onGoalHappened += AttributeGoal;
 
         }
-        _instance = this.GetComponent<GameManager>();
+        _instance = this.GetComponent<RuleManager>();
     }
 
 

@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GameManager : MonoBehaviour
+public class GameManager : RuleManager
 {
     const float TIME_ON_GAME = 300f;
 
@@ -13,9 +13,7 @@ public class GameManager : MonoBehaviour
 
     private void Awake()
     {
-        mainStats.TimeSpent = TIME_ON_GAME;
-        mainStats.goalScore = new uint[Enum.GetNames(typeof(Teams)).Length];
-        onGoalHappened += UpdateTeamScore;
+        StartCondition();
     }
 
     private void LateUpdate()
@@ -33,7 +31,17 @@ public class GameManager : MonoBehaviour
         mainStats.goalScore[(int)goal.team] += 1;
     }
 
+    public override void StartCondition()
+    {
+        mainStats.TimeSpent = TIME_ON_GAME;
+        mainStats.goalScore = new uint[Enum.GetNames(typeof(Teams)).Length];
+        onGoalHappened += UpdateTeamScore;
+    }
 
+    public override void EndCondition()
+    {
+        throw new NotImplementedException();
+    }
 }
 
 public struct GameStats {
