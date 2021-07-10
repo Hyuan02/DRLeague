@@ -34,12 +34,7 @@ public class PenaltyManager : RuleManager
     void Start()
     {
         onGoalHappened += ReceiveGoal;
-        RandomizeCarPosition();
-    }
-
-    void Update()
-    {
-        
+        StartCondition();
     }
 
     
@@ -64,7 +59,7 @@ public class PenaltyManager : RuleManager
     {
         _carAgent.ResetCarState();
         Vector3 newPosition = GenerateRandomCarPosition();
-        newPosition.y = _carAgent.transform.localPosition.y;
+        newPosition.y = -7.1f;
         _carAgent.SetToPositionAndRotation(newPosition, Quaternion.Euler(0,90,0));
         _carAgent.canMove = true;
     }

@@ -7,7 +7,7 @@ public class BallManager : MonoBehaviour
     private Vector3 _defaultBallPosition;
     private Rigidbody _rBody;
 
-    private void Start()
+    private void Awake()
     {
         _rBody = this.GetComponent<Rigidbody>();
         _defaultBallPosition = this.transform.localPosition;
