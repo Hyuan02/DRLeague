@@ -25,6 +25,5 @@ public class GoalManager : MonoBehaviour
     void AttributeGoal(TeamInfo info, GoalInfo goal) {
         _instance.onGoalHappened.Invoke(info, goal);
         Debug.Log("Goal!");
-        _ball.ResetBall();
     } 
 }

@@ -40,7 +40,7 @@ public class CarManager : MonoBehaviour
         _rBody.centerOfMass = cogLow.localPosition;
         _rBody.maxAngularVelocity = Constants.Instance.MaxAngularVelocity;
 
-        _defaultPosition = this.transform.position;
+        _defaultPosition = this.transform.localPosition;
 
         stats.boostQuantity = 100f;
     }
@@ -107,16 +107,23 @@ public class CarManager : MonoBehaviour
     {
         _rBody.velocity = Vector3.zero;
         _rBody.angularVelocity = Vector3.zero;
-        _rBody.rotation = Quaternion.identity;
 
-        _rBody.position = this._defaultPosition;
+        transform.localPosition = _defaultPosition;
+        transform.localRotation = Quaternion.identity;
         stats.forwardSpeed = 0;
         stats.forwardAcceleration = 0;
+        stats.boostQuantity = 100;
     }
 
-    public void SetToPositionAndRotation(Vector3 position, Quaternion rotation)
+    public void SetToPositionAndRotation(Vector3? position, Quaternion? rotation)
     {
-        _rBody.position = position;
-        _rBody.rotation = rotation;
+        if(position.HasValue)
+        {
+            transform.localPosition = position.Value;
+        }
+        if (rotation.HasValue)
+        {
+            transform.localRotation = rotation.Value;
+        }
     }
 }
