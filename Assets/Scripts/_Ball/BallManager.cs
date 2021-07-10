@@ -20,4 +20,9 @@ public class BallManager : MonoBehaviour
         _rBody.velocity = Vector3.zero;
         _rBody.angularVelocity = Vector3.zero;
     }
+
+    public void SetBallOnPosition(Vector3 position)
+    {
+        transform.localPosition = position;
+    }
 }

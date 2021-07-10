@@ -34,7 +34,7 @@ public class CarManager : MonoBehaviour
 
 
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
         _rBody = this.GetComponent<Rigidbody>();
         _rBody.centerOfMass = cogLow.localPosition;
@@ -108,8 +108,15 @@ public class CarManager : MonoBehaviour
         _rBody.velocity = Vector3.zero;
         _rBody.angularVelocity = Vector3.zero;
         _rBody.rotation = Quaternion.identity;
+
         _rBody.position = this._defaultPosition;
         stats.forwardSpeed = 0;
         stats.forwardAcceleration = 0;
+    }
+
+    public void SetToPositionAndRotation(Vector3 position, Quaternion rotation)
+    {
+        _rBody.position = position;
+        _rBody.rotation = rotation;
     }
 }
