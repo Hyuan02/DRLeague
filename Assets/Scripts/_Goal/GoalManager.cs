@@ -23,7 +23,7 @@ public class GoalManager : MonoBehaviour
 
 
     void AttributeGoal(TeamInfo info, GoalInfo goal) {
+        Debug.Log("Goal happened!");
         _instance.onGoalHappened.Invoke(info, goal);
-        Debug.Log("Goal!");
     } 
 }
