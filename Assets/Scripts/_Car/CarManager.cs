@@ -30,6 +30,8 @@ public class CarManager : MonoBehaviour
     [SerializeField]
     internal bool canMove = true;
 
+    private IInputSignals _controllerInterface;
+
     Vector3 _defaultPosition; 
 
 
@@ -43,6 +45,8 @@ public class CarManager : MonoBehaviour
         _defaultPosition = this.transform.localPosition;
 
         stats.boostQuantity = 100f;
+
+        _controllerInterface = this.GetComponent<IInputSignals>();
     }
 
 
@@ -86,15 +90,15 @@ public class CarManager : MonoBehaviour
         stats.isCanDrive = carState == CarStates.AllWheelsSurface || carState == CarStates.AllWheelsGround;
     }
 
-    internal float GetForwardSignal() => canMove ? InputController.forwardInput : 0;
+    internal float GetForwardSignal() => canMove ? _controllerInterface.GetForwardSignal() : 0;
 
-    internal float GetTurnSignal() => canMove? InputController.turnInput : 0;
+    internal float GetTurnSignal() => canMove? _controllerInterface.GetTurnSignal() : 0;
 
-    internal bool GetBoostSignal() => canMove? InputController.boostInput : false;
+    internal bool GetBoostSignal() => canMove? _controllerInterface.GetBoostSignal() : false;
 
-    internal bool GetJumpSignal() => canMove? InputController.jumpInput : false;
+    internal bool GetJumpSignal() => canMove? _controllerInterface.GetJumpSignal() : false;
 
-    internal bool GetHeldJumpSignal() => canMove? InputController.HeldJumpInput : false;
+    internal bool GetHeldJumpSignal() => canMove? _controllerInterface.GetHeldJumpSignal() : false;
 
     private void UpdateStats()
     {
