@@ -46,7 +46,7 @@ public class PenaltyManager : RuleManager
 
     public override void EndCondition()
     {
-        _carAgent.canMove = false;
+        onGameFinished?.Invoke();
     }
 
     void ReceiveGoal(TeamInfo info, GoalInfo goal)
@@ -75,11 +75,12 @@ public class PenaltyManager : RuleManager
 
     public void OnTouchedBall()
     {
-        EndCondition();
+        _carAgent.canMove = false;
     }
 
     public void OnStoppedBall()
     {
+        EndCondition();
         StartCondition();
     }
 
