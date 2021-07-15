@@ -18,6 +18,11 @@ public class PenaltyAgent : Agent, IInputSignals
     ActionSegment<float> currentContinousActions = ActionSegment<float>.Empty;
     ActionSegment<int> currentDiscreteActions = ActionSegment<int>.Empty;
 
+    [SerializeField]
+    float timeToWaitBeforeRestart = 10f;
+    float _timeWaitedToRestart = 0f;
+
+
 
     void Start()
     {
@@ -28,13 +33,16 @@ public class PenaltyAgent : Agent, IInputSignals
 
     public override void OnEpisodeBegin()
     {
-        base.OnEpisodeBegin();
+        Debug.Log("Begin episode!");
+        _timeWaitedToRestart = 0;
     }
 
     public override void OnActionReceived(ActionBuffers actionBuffers)
     {
+        Debug.Log("Getting actions!");
         currentContinousActions = actionBuffers.ContinuousActions;
         currentDiscreteActions = actionBuffers.DiscreteActions;
+        CountTimeToRestart();
     }
 
 
@@ -98,5 +106,17 @@ public class PenaltyAgent : Agent, IInputSignals
     void BadEndRoutine()
     {
         this.AddReward(-1f);
+        EndEpisode();
+    }
+
+    private void CountTimeToRestart()
+    {
+        _timeWaitedToRestart += Time.fixedDeltaTime;
+        if (_timeWaitedToRestart >= timeToWaitBeforeRestart)
+        {
+            _gameManager.EndCondition();
+            _gameManager.StartCondition();
+        }
+
     }
 }

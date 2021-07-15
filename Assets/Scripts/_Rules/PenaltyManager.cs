@@ -42,6 +42,7 @@ public class PenaltyManager : RuleManager
     {
         RandomizeCarPosition();
         RandomizeBallPosition();
+        onGameStarted?.Invoke();
     }
 
     public override void EndCondition()

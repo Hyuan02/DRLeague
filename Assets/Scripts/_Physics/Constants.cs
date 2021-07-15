@@ -5,9 +5,9 @@ using UnityEngine;
 public class Constants : MonoBehaviour
 {
     [SerializeField]
-    private float _maxAngularVelocity = 5.5f;
+    private static float _maxAngularVelocity = 5.5f;
 
-    public float MaxAngularVelocity => _maxAngularVelocity;
+    public static float MaxAngularVelocity => _maxAngularVelocity;
 
     [SerializeField]
     private float _normalLength = 0.95f;
