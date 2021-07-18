@@ -36,10 +36,12 @@ public class BoostingController : MonoBehaviour
         {
             _rBody.AddForce(Constants.BoostForce * Constants.BoostForceMultiplier * this.transform.forward, ForceMode.Acceleration);
             _instance.stats.boostQuantity = Mathf.Clamp(_instance.stats.boostQuantity - _boostConsumingRate * Time.fixedDeltaTime, 0, 100);
+            _instance.stats.isBoosting = true;
         }
     }
 
     void BoostRecovering() {
         _instance.stats.boostQuantity = Mathf.Clamp(_instance.stats.boostQuantity + _boostRecoveringRate * Time.fixedDeltaTime, 0, 100);
+        _instance.stats.isBoosting = false;
     }
 }

@@ -36,5 +36,6 @@ public struct CarStats
 
     [Header("Boost")]
     public float boostQuantity;
+    public bool isBoosting;
 
 }

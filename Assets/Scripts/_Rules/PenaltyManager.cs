@@ -85,7 +85,7 @@ public class PenaltyManager : RuleManager
         StartCondition();
     }
 
-    private Vector3 GenerateRandomCarPosition() => new Vector3(UnityEngine.Random.Range(minCarXRange, maxCarXRange), 0, UnityEngine.Random.Range(minCarZRange, maxCarZRange));
+    private Vector3 GenerateRandomCarPosition() => new Vector3(minCarXRange, 0, UnityEngine.Random.Range(minCarZRange, maxCarZRange));
 
 
     private Vector3 GenerateRandomBallPosition() => new Vector3(0, 0, UnityEngine.Random.Range(minBallZRange, maxBallZRange));

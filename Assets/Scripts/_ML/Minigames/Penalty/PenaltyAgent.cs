@@ -19,7 +19,7 @@ public class PenaltyAgent : Agent, IInputSignals
     ActionSegment<int> currentDiscreteActions = ActionSegment<int>.Empty;
 
     [SerializeField]
-    float timeToWaitBeforeRestart = 10f;
+    float timeToWaitBeforeRestart = 15f;
     float _timeWaitedToRestart = 0f;
 
 
@@ -31,18 +31,24 @@ public class PenaltyAgent : Agent, IInputSignals
         _gameManager.onGameFinished += BadEndRoutine;
     }
 
+    void FixedUpdate()
+    {
+        CountTimeToRestart();
+    }
+
     public override void OnEpisodeBegin()
     {
-        Debug.Log("Begin episode!");
+        //Debug.Log("Begin episode!");
         _timeWaitedToRestart = 0;
     }
 
     public override void OnActionReceived(ActionBuffers actionBuffers)
     {
-        Debug.Log("Getting actions!");
+        //Debug.Log("Getting actions!");
         currentContinousActions = actionBuffers.ContinuousActions;
         currentDiscreteActions = actionBuffers.DiscreteActions;
-        CountTimeToRestart();
+
+        this.AddReward(-0.01f);
     }
 
 
@@ -76,6 +82,7 @@ public class PenaltyAgent : Agent, IInputSignals
             sensor.AddObservation(_carInstance.stats.isJumping);
             //car boost stats
             sensor.AddObservation(_carInstance.stats.boostQuantity);
+            sensor.AddObservation(_carInstance.stats.isBoosting);
             //car move stats
             sensor.AddObservation(_carInstance.stats.forwardAcceleration);
             sensor.AddObservation(_carInstance.stats.forwardSpeed);
@@ -94,7 +101,7 @@ public class PenaltyAgent : Agent, IInputSignals
 
     void RewardCondition(TeamInfo team, GoalInfo goal)
     {
-        this.AddReward(1000f);
+        this.AddReward(10f);
         this.EndEpisode();
     }
 
@@ -105,7 +112,7 @@ public class PenaltyAgent : Agent, IInputSignals
 
     void BadEndRoutine()
     {
-        this.AddReward(-1f);
+        this.AddReward(-10f);
         EndEpisode();
     }
 

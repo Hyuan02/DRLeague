@@ -23,18 +23,11 @@ public class JumpingController : MonoBehaviour
         if (!turningCarEffect)
         {
             CheckAirStatus();
+            ControlJump();
         }
         else
         {
             TurningCarToGround();
-        }
-    }
-
-    private void Update()
-    {
-        if (!turningCarEffect)
-        {
-            ControlJump();
         }
     }
 
@@ -94,7 +87,7 @@ public class JumpingController : MonoBehaviour
         Vector3 projection = Vector3.ProjectOnPlane(transform.forward, Vector3.up);
         Quaternion rotationToGround = Quaternion.LookRotation(projection, Vector3.up);
 
-        _rBody.MoveRotation(Quaternion.Lerp(_rBody.rotation, rotationToGround, Time.deltaTime * 5f));
+        _rBody.MoveRotation(Quaternion.Lerp(_rBody.rotation, rotationToGround, Time.fixedDeltaTime * 5f));
 
         if((transform.up - Vector3.up).magnitude < 0.1f)
         {

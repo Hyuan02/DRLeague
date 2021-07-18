@@ -88,6 +88,11 @@ public class CarManager : MonoBehaviour
             carState = CarStates.BodyGroundDead;
         }
 
+        if(!stats.isBodySurface && stats.wheelsSurface == 0)
+        {
+            carState = CarStates.Air;
+        }
+
         stats.isCanDrive = carState == CarStates.AllWheelsSurface || carState == CarStates.AllWheelsGround;
     }
 

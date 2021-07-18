@@ -24,7 +24,7 @@ public class PenaltyInteractor : MonoBehaviour
 
     bool _initiateCount;
 
-    uint secondsToCount = 5;
+    uint secondsToCount = 7;
 
     float _secondsCounted = 0;
 
@@ -33,6 +33,7 @@ public class PenaltyInteractor : MonoBehaviour
         _rBody = this.GetComponentInParent<Rigidbody>();
         state = BallPenaltyState.PRISTINE;
         _instance.onGoalHappened += ResetBallState;
+        _instance.onGameFinished += ResetBallState;
     }
 
     private void FixedUpdate()
@@ -75,6 +76,12 @@ public class PenaltyInteractor : MonoBehaviour
     }
 
     void ResetBallState(TeamInfo info, GoalInfo infoGoal)
+    {
+        state = BallPenaltyState.PRISTINE;
+        _secondsCounted = 0;
+    }
+
+    void ResetBallState()
     {
         state = BallPenaltyState.PRISTINE;
         _secondsCounted = 0;

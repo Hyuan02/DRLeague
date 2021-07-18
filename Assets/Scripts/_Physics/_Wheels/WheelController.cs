@@ -63,7 +63,7 @@ public class WheelController : MonoBehaviour
         if (_wheelMesh)
         {
             _wheelMesh.localRotation = transform.localRotation;
-            _meshRevolutionAngle += (Time.deltaTime * transform.InverseTransformDirection(_wheelVelocity).z) /
+            _meshRevolutionAngle += (Time.fixedDeltaTime * transform.InverseTransformDirection(_wheelVelocity).z) /
               (2 * Mathf.PI * _wheelRadius) * 360;
 
             _wheelMesh.Rotate(Vector3.right, _meshRevolutionAngle * 1.3f);
