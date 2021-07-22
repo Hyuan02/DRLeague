@@ -13,4 +13,6 @@ public class PlayerInputSignal : MonoBehaviour,IInputSignals
     public bool GetJumpSignal() => InputController.jumpInput;
     
     public bool GetHeldJumpSignal() => InputController.HeldJumpInput;
+
+    public bool GetDriftSignal() => InputController.GetDriftInput;
 }

@@ -22,10 +22,17 @@ public class GroundController : MonoBehaviour
     private void FixedUpdate()
     {
         //ApplyDownForce();
+        CalculateDriftDrag();
         _instance.stats.forwardAcceleration = CalcForwardForce(_instance.GetForwardSignal(), _instance.GetBoostSignal());
         _instance.stats.currentSteerAngle = CalculateSteerAngle(_instance.GetTurnSignal());
         //ApplyRotOnWheels();
 
+    }
+
+    private void CalculateDriftDrag()
+    {
+        float currentDriftDrag = _instance.GetDriftSignal() ? _instance.stats.wheelSideFrictionDrift : _instance.stats.wheelSideFriction;
+        _instance.stats.currentWheelSideFriction = Mathf.MoveTowards(_instance.stats.currentWheelSideFriction, currentDriftDrag, Time.deltaTime * _instance.stats.driftTime);
     }
 
     private void ApplyDownForce()

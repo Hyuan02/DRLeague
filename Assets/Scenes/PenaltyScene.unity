@@ -391,7 +391,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f46187255d89b2c48a800de2c52464c1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _maxAngularVelocity: 5.5
   _normalLength: 0.95
 --- !u!64 &414616494
 MeshCollider:
@@ -509,6 +508,7 @@ MonoBehaviour:
     isJumping: 0
     canKeepJumping: 0
     boostQuantity: 0
+    isBoosting: 0
   colliders:
   - {fileID: 78617321}
   - {fileID: 273212122}
@@ -21859,9 +21859,7 @@ GameObject:
   - component: {fileID: 449075432}
   - component: {fileID: 449075433}
   - component: {fileID: 449075436}
-  - component: {fileID: 1258923819952496089}
   - component: {fileID: 1258923819952496088}
-  - component: {fileID: 1258923819952496090}
   m_Layer: 8
   m_Name: CarAgent
   m_TagString: Car
@@ -21878,60 +21876,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 1258923819952496087}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 42cd8c2da50745346ac986b4f68cd5a4, type: 3}
+  m_Script: {fileID: 11500000, guid: 6f3f68cd443c6b246b0a330a3b8bcc4d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  agentParameters:
-    maxStep: 0
-  hasUpgradedFromAgentParameters: 1
-  MaxStep: 20000
-  _gameManager: {fileID: 106633825}
-  _carInstance: {fileID: 449075418}
-  _ballInstance: {fileID: 871930181}
---- !u!114 &1258923819952496089
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1258923819952496087}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5d1c4e0b1822b495aa52bc52839ecb30, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_BrainParameters:
-    VectorObservationSize: 22
-    NumStackedVectorObservations: 1
-    m_ActionSpec:
-      m_NumContinuousActions: 2
-      BranchSizes: 020000000200000002000000
-    VectorActionSize: 
-    VectorActionDescriptions: []
-    VectorActionSpaceType: 0
-    hasUpgradedBrainParametersWithActionSpec: 1
-  m_Model: {fileID: 0}
-  m_InferenceDevice: 3
-  m_BehaviorType: 0
-  m_BehaviorName: Penalty
-  TeamId: 0
-  m_UseChildSensors: 1
-  m_UseChildActuators: 1
-  m_ObservableAttributeHandling: 0
---- !u!114 &1258923819952496090
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1258923819952496087}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3a5c9d521e5ef4759a8246a07d52221e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  DecisionPeriod: 5
-  TakeActionsBetweenDecisions: 1
 --- !u!135 &1258923819997113010
 SphereCollider:
   m_ObjectHideFlags: 0

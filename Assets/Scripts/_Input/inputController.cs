@@ -12,4 +12,7 @@ public static class InputController
         Input.GetMouseButtonDown(1);
     public static bool HeldJumpInput =>
         Input.GetMouseButton(1);
+
+    public static bool GetDriftInput =>
+        Input.GetKey(KeyCode.Space);
 }

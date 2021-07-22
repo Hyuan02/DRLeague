@@ -42,7 +42,7 @@ public class JumpingController : MonoBehaviour
             _instance.stats.isJumping = true;
         }
 
-        if (_instance.GetHeldJumpSignal() && _instance.stats.isJumping && _instance.stats.canKeepJumping && _jumpTimer >= 0.05f && _jumpTimer <= 0.09f)
+        if (_instance.GetHeldJumpSignal() && _instance.stats.isJumping && _instance.stats.canKeepJumping && _jumpTimer >= 0.05f && _jumpTimer <= 0.14f)
         {
             _rBody.AddForce(transform.up * Constants.MidJumpTorque * Constants.JumpForceMultiplier, ForceMode.Acceleration);
         }

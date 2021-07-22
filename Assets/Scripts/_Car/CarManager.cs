@@ -106,6 +106,8 @@ public class CarManager : MonoBehaviour
 
     internal bool GetHeldJumpSignal() => canMove? _controllerInterface.GetHeldJumpSignal() : false;
 
+    internal bool GetDriftSignal() => canMove ? _controllerInterface.GetDriftSignal() : false;
+
     private void UpdateStats()
     {
         stats.forwardSpeed = Vector3.Dot(_rBody.velocity, transform.forward);
