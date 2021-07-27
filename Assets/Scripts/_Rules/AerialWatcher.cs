@@ -9,12 +9,15 @@ public class AerialWatcher : MonoBehaviour
     [Header("Indicators")]
     bool _hasJumped = false;
 
-    bool _aerialMade = false;
+    public bool aerialMade { get; private set; } = false;
 
     uint _jumpQuantity = 0;
 
     [SerializeField]
     private CarManager _carInstance;
+
+    [SerializeField]
+    private BallCollider _colliderInstance;
 
     private AerialManager _manager;
 
@@ -28,10 +31,11 @@ public class AerialWatcher : MonoBehaviour
     private void FixedUpdate()
     {
         WatchJumpQuantity();
-    }
-    private void LateUpdate()
-    {
-        WatchGroundHeight();
+        if (_colliderInstance.IsBeingTouched)
+        {
+            WatchGroundHeight();
+        }
+       
     }
     private void WatchJumpQuantity()
     {
@@ -55,7 +59,7 @@ public class AerialWatcher : MonoBehaviour
         Debug.DrawRay(_carInstance.transform.localPosition, Vector3.up * -1, Color.red);
         if (!Physics.Raycast(_carInstance.transform.localPosition, Vector3.up * -1, 4.0f))
         {
-            _aerialMade = true;
+            aerialMade = true;
         }
     }
     
@@ -63,11 +67,11 @@ public class AerialWatcher : MonoBehaviour
     {
         _hasJumped = false;
         _jumpQuantity = 0;
-        _aerialMade = false;
+        aerialMade = false;
     }
 
     private void AnalyzeGoal()
     {
-        _manager.OnGoalAnalyzed(_jumpQuantity > 0 && _aerialMade);
+        _manager.OnGoalAnalyzed(_jumpQuantity > 0 && aerialMade);
     }
 }

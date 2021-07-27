@@ -61,9 +61,8 @@ public class PenaltyAgent : Agent, IInputSignals
     public float GetForwardSignal() => currentContinousActions.Length > 0? currentContinousActions[0] : 0;
     public float GetTurnSignal() => currentContinousActions.Length > 0? currentContinousActions[1] : 0;
     public bool GetJumpSignal() => currentDiscreteActions.Length > 0? (currentDiscreteActions[0] > 0?  true : false) : false;
-    public bool GetHeldJumpSignal() => currentDiscreteActions.Length > 0 ? (currentDiscreteActions[1] > 0 ? true : false) : false;
-    public bool GetBoostSignal() => currentDiscreteActions.Length > 0 ? (currentDiscreteActions[2] > 0 ? true : false) : false;
-    public bool GetDriftSignal() => currentDiscreteActions.Length > 0 ? (currentDiscreteActions[3] > 0 ? true : false) : false;
+    public bool GetBoostSignal() => currentDiscreteActions.Length > 0 ? (currentDiscreteActions[1] > 0 ? true : false) : false;
+    public bool GetDriftSignal() => currentDiscreteActions.Length > 0 ? (currentDiscreteActions[2] > 0 ? true : false) : false;
     #endregion
 
 

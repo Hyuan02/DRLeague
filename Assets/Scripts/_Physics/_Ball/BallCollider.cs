@@ -14,6 +14,8 @@ public class BallCollider : MonoBehaviour
     private bool _isTouchedGround = false;
     private Rigidbody _rBody;
 
+    public bool IsBeingTouched { private set; get; } = false;
+
     private void Start()
     {
         _rBody = this.GetComponent<Rigidbody>();
@@ -30,6 +32,21 @@ public class BallCollider : MonoBehaviour
         }
     }
 
+    private void OnCollisionStay(Collision collision)
+    {
+        if (collision.gameObject.CompareTag("Car"))
+        {
+            IsBeingTouched = true;
+        }
+    }
+
+    private void OnCollisionExit(Collision collision)
+    {
+        if (collision.gameObject.CompareTag("Car"))
+        {
+            IsBeingTouched = false;
+        }
+    }
 
     private void ApplyBehaviourWithCar(Collision collision)
     {

@@ -33,6 +33,7 @@ public class AerialManager : RuleManager
 
     public System.Action onRestartGame;
     public System.Action onGoalReceived;
+    public System.Action onValidGoal;
 
     private AerialWatcher _watcher;
 
@@ -56,20 +57,20 @@ public class AerialManager : RuleManager
 
     public override void StartCondition()
     {
-        Debug.Log("Restart");
         onRestartGame?.Invoke();
         _carInstance.ResetCarState();
         _carInstance.SetToPositionAndRotation(null,Quaternion.Euler(0, 90, 0));
         _ballInstance.ResetBall();
         RestartTimeCounter();
         ThrowBall();
+        onGameStarted?.Invoke();
         _ballInstance.FreezeBall();
         _waitingToDrop = true;
     }
 
     public override void EndCondition()
     {
-        throw new System.NotImplementedException();
+        onGameFinished?.Invoke();
     }
 
     private void ThrowBall()
@@ -88,9 +89,13 @@ public class AerialManager : RuleManager
     {
         if (validGoal)
         {
-            Debug.Log("GOAAAAAAAAAAAAL with aerial!");
             _numberOfGoals++;
+            onValidGoal?.Invoke();
             UpdateScoreText();
+        }
+        else
+        {
+            EndCondition();
         }
         StartCondition();
     }
@@ -117,6 +122,7 @@ public class AerialManager : RuleManager
             _timeWaitedToRestart += Time.fixedDeltaTime;
             if(_timeWaitedToRestart >= timeToWaitBeforeRestart)
             {
+                EndCondition();
                 StartCondition();
             }
         }
@@ -132,6 +138,7 @@ public class AerialManager : RuleManager
 
     public void OnStoppedBall()
     {
+        EndCondition();
         StartCondition();
     }
 

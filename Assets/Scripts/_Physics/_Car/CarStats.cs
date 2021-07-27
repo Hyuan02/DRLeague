@@ -33,6 +33,8 @@ public struct CarStats
     public bool canFirstJump;
     public bool isJumping;
     public bool canKeepJumping;
+    public bool canDoubleJump;
+    public bool hasDoubleJump;
 
     [Header("Boost")]
     public float boostQuantity;

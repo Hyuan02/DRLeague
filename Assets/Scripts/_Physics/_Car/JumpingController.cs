@@ -42,13 +42,15 @@ public class JumpingController : MonoBehaviour
             _instance.stats.isJumping = true;
         }
 
-        if (_instance.GetHeldJumpSignal() && _instance.stats.isJumping && _instance.stats.canKeepJumping && _jumpTimer >= 0.05f && _jumpTimer <= 0.14f)
+        if (_instance.GetJumpSignal() && _instance.stats.isJumping && _instance.stats.canKeepJumping && _jumpTimer >= 0.05f && _jumpTimer <= 0.14f)
         {
             _rBody.AddForce(transform.up * Constants.MidJumpTorque * Constants.JumpForceMultiplier, ForceMode.Acceleration);
         }
 
-        if (_instance.GetJumpSignal() && _instance.stats.isJumping && _jumpTimer >= 0.1f) {
+        if (_instance.GetJumpSignal() && _instance.stats.isJumping && _jumpTimer >= 0.2f && _instance.stats.canDoubleJump && !_instance.stats.hasDoubleJump) {
             _rBody.AddForce(transform.up * Constants.InitalJumpTorque * Constants.JumpForceMultiplier, ForceMode.VelocityChange);
+            _instance.stats.canDoubleJump = false;
+            _instance.stats.hasDoubleJump = true;
         }
 
         if (_instance.GetJumpSignal() && _instance.carState.Equals(CarStates.BodyGroundDead)) {
@@ -56,9 +58,16 @@ public class JumpingController : MonoBehaviour
 
         }
 
-
-        if (!_instance.GetHeldJumpSignal())
+        if (_instance.stats.isJumping && !_instance.GetJumpSignal())
+        {
+            _instance.stats.canDoubleJump = true;
+        }
+        else if (!_instance.GetJumpSignal())
+        {
             _instance.stats.canKeepJumping = false;
+        }
+
+       
 
     }
 
@@ -70,6 +79,8 @@ public class JumpingController : MonoBehaviour
             if (_jumpTimer >= 0.1f)
             {
                 _instance.stats.isJumping = false;
+                _instance.stats.canDoubleJump = false;
+                _instance.stats.hasDoubleJump = false;
                 _jumpTimer = 0f;
                 _instance.stats.canFirstJump = true;
             }

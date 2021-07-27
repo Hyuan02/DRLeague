@@ -104,8 +104,6 @@ public class CarManager : MonoBehaviour
 
     internal bool GetJumpSignal() => canMove? _controllerInterface.GetJumpSignal() : false;
 
-    internal bool GetHeldJumpSignal() => canMove? _controllerInterface.GetHeldJumpSignal() : false;
-
     internal bool GetDriftSignal() => canMove ? _controllerInterface.GetDriftSignal() : false;
 
     private void UpdateStats()
@@ -125,6 +123,12 @@ public class CarManager : MonoBehaviour
         stats.forwardSpeed = 0;
         stats.forwardAcceleration = 0;
         stats.boostQuantity = 100;
+
+        stats.canFirstJump = true;
+        stats.canDoubleJump = false;
+        stats.canKeepJumping = false;
+        stats.hasDoubleJump = false;
+        stats.isJumping = false;
     }
 
     public void SetToPositionAndRotation(Vector3? position, Quaternion? rotation)

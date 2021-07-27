@@ -4,7 +4,5 @@ public interface IInputSignals
     public float GetTurnSignal();
     public bool GetBoostSignal();
     public bool GetJumpSignal();
-    public bool GetHeldJumpSignal();
-
     public bool GetDriftSignal();
 }

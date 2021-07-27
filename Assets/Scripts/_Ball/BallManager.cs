@@ -33,6 +33,7 @@ public class BallManager : MonoBehaviour
 
     public void FreezeBall()
     {
+        _rBody.collisionDetectionMode = CollisionDetectionMode.ContinuousSpeculative;
         _rBody.isKinematic = true;
         _rBody.Sleep();
         State = BallStates.FREEZE;
@@ -42,6 +43,7 @@ public class BallManager : MonoBehaviour
     {
         _rBody.WakeUp();
         _rBody.isKinematic = false;
+        _rBody.collisionDetectionMode = CollisionDetectionMode.Continuous;
         State = BallStates.IN_MOVEMENT;
     }
 
