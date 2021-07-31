@@ -6,6 +6,13 @@ public class BallManager : MonoBehaviour
 {
     private Vector3 _defaultBallPosition;
     private Rigidbody _rBody;
+
+    public System.Action onBallDropped;
+    public System.Action onFirstTouched;
+
+    private bool firstTouched = false;
+
+    public Vector3 BallVelocity => _rBody.velocity;
     public BallStates State
     {
         get;
@@ -24,6 +31,7 @@ public class BallManager : MonoBehaviour
         transform.localRotation = Quaternion.identity;
         _rBody.velocity = Vector3.zero;
         _rBody.angularVelocity = Vector3.zero;
+        firstTouched = false;
     }
 
     public void SetBallOnPosition(Vector3 position)
@@ -33,8 +41,7 @@ public class BallManager : MonoBehaviour
 
     public void FreezeBall()
     {
-        _rBody.collisionDetectionMode = CollisionDetectionMode.ContinuousSpeculative;
-        _rBody.isKinematic = true;
+        _rBody.useGravity = false;
         _rBody.Sleep();
         State = BallStates.FREEZE;
     }
@@ -42,9 +49,26 @@ public class BallManager : MonoBehaviour
     public void UnFreezeBall()
     {
         _rBody.WakeUp();
-        _rBody.isKinematic = false;
-        _rBody.collisionDetectionMode = CollisionDetectionMode.Continuous;
+        _rBody.useGravity = true;
         State = BallStates.IN_MOVEMENT;
+        onBallDropped?.Invoke();
+    }
+
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("BodyCollider") || other.CompareTag("SphereCollider"))
+        {
+            if(State == BallStates.FREEZE)
+            {
+                UnFreezeBall();
+            }
+            if (!firstTouched)
+            {
+                onFirstTouched?.Invoke();
+                firstTouched = true;
+            }
+        }
     }
 
 

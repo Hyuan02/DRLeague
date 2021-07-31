@@ -15,6 +15,11 @@ public class AerialAgent : Agent, IInputSignals
     BallManager _ballInstance;
     [SerializeField]
     AerialWatcher _watcher;
+    [SerializeField]
+    AerialInteractor _aerialInteractor;
+    [SerializeField]
+    Transform _goalpost;
+    
 
     ActionSegment<float> currentContinousActions = ActionSegment<float>.Empty;
     ActionSegment<int> currentDiscreteActions = ActionSegment<int>.Empty;
@@ -65,39 +70,53 @@ public class AerialAgent : Agent, IInputSignals
     {
         if (_carInstance)
         {
-            //car spacial stats 
+            ///car spacial stats 
             sensor.AddObservation(_carInstance.stats.isCanDrive);
             sensor.AddObservation(_carInstance.stats.isBodySurface);
-            sensor.AddObservation(_carInstance.stats.isAllWheelsSurface);
             sensor.AddObservation(_carInstance.stats.wheelsSurface);
             sensor.AddObservation(_carInstance.canMove);
-            //car jump stats
-            sensor.AddObservation(_carInstance.stats.canFirstJump);
-            sensor.AddObservation(_carInstance.stats.canKeepJumping);
+            ///car jump stats
+            //sensor.AddObservation(_carInstance.stats.canFirstJump);
+            //sensor.AddObservation(_carInstance.stats.canKeepJumping);
             sensor.AddObservation(_carInstance.stats.isJumping);
-            sensor.AddObservation(_carInstance.stats.canDoubleJump);
-            sensor.AddObservation(_carInstance.stats.hasDoubleJump);
+            //sensor.AddObservation(_carInstance.stats.canDoubleJump);
+            //sensor.AddObservation(_carInstance.stats.hasDoubleJump);
             //car boost stats
             sensor.AddObservation(_carInstance.stats.boostQuantity);
             sensor.AddObservation(_carInstance.stats.isBoosting);
             //car move stats
-            sensor.AddObservation(_carInstance.stats.forwardAcceleration);
-            sensor.AddObservation(_carInstance.stats.forwardSpeed);
+            sensor.AddObservation(_carInstance.stats.forwardSpeedSign);
+            sensor.AddObservation((_carInstance.stats.forwardSpeedAbs - 0)/(Constants.Instance.MaxSpeed));
             sensor.AddObservation(_carInstance.stats.currentSteerAngle);
 
-            //car transform stats
-            sensor.AddObservation(_carInstance.transform.localPosition);
-            sensor.AddObservation(_carInstance.transform.localRotation);
+            ///car transform stats
+            sensor.AddObservation(_carInstance.transform.localEulerAngles/360.0f);
         }
 
         if (_ballInstance)
         {
-            sensor.AddObservation(_ballInstance.transform.localPosition);
-            sensor.AddObservation((int)_ballInstance.State);
+
+            ///ball related to agent
+            sensor.AddObservation(_carInstance.transform.position - _ballInstance.transform.position);
+
+            sensor.AddObservation(_ballInstance.BallVelocity);
+            sensor.AddOneHotObservation((int)_ballInstance.State, 2);
+
+        }
+
+        if (_goalpost)
+        {
+            ///ball related to goal
+            sensor.AddObservation(_goalpost.transform.position - _ballInstance.transform.position);
         }
 
         if (_watcher)
             sensor.AddObservation(_watcher.aerialMade);
+
+        if (_aerialInteractor)
+        {
+            sensor.AddOneHotObservation((int)_aerialInteractor.state, 3);
+        }
     }
 
     void RewardCondition()
@@ -114,7 +133,6 @@ public class AerialAgent : Agent, IInputSignals
 
     void BadEndRoutine()
     {
-        Debug.Log("Game finished!");
         this.AddReward(-10f);
         EndEpisode();
     }

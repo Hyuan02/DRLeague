@@ -149,5 +149,5 @@ public class AerialManager : RuleManager
             _scoreText.text = $"Goal: {_numberOfGoals}";
         }
     }
-    private Vector3 GenerateBallAirPosition() => new Vector3(26, -0.5f, Random.Range(ballZMin, ballZMax));
+    private Vector3 GenerateBallAirPosition() => new Vector3(26, 1f, Random.Range(ballZMin, ballZMax));
 }

@@ -2,15 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+
 public class AerialInteractor : MonoBehaviour
 {
-    private enum AerialKickState
-    {
-        PRISTINE,
-        ON_COUNT
-    }
 
-    private AerialKickState state;
+    public AerialKickState state { private set; get; }
 
     private float _secondsCounted = 0;
     [SerializeField]
@@ -23,24 +19,42 @@ public class AerialInteractor : MonoBehaviour
     [SerializeField]
     AerialManager _instance;
 
+    [SerializeField]
+    BallManager _manager;
+
+
 
     private void Start()
     {
         _rBody = this.GetComponentInParent<Rigidbody>();
+        _manager.onBallDropped += ChangeBallStateToDrop;
+        _manager.onFirstTouched += ChangeBallStateToTouch;
     }
 
     private void FixedUpdate()
     {
-        CheckVelocity();
-    }
-
-    private void OnTriggerEnter(Collider other)
-    {
-        if (other.CompareTag("BodyCollider") || other.CompareTag("SphereCollider"))
+        switch (state)
         {
-            state = AerialKickState.ON_COUNT;
+            case AerialKickState.ON_COUNT:
+                CountTimeOnDrop();
+                break;
+            case AerialKickState.TOUCHED:
+                CheckVelocity();
+                break;
         }
     }
+
+
+    void ChangeBallStateToDrop()
+    {
+        state = AerialKickState.ON_COUNT;
+    }
+    
+    void ChangeBallStateToTouch()
+    {
+        state = AerialKickState.TOUCHED;
+    }
+    
 
     private void CheckVelocity()
     {
@@ -63,4 +77,27 @@ public class AerialInteractor : MonoBehaviour
 
 
     }
+
+
+    private void CountTimeOnDrop()
+    {
+
+        _secondsCounted += Time.fixedDeltaTime;
+        if (_secondsCounted >= secondsToCountBeforeReset)
+        {
+            _secondsCounted = 0;
+            state = AerialKickState.PRISTINE;
+            _instance.OnStoppedBall();
+        }
+    }
+
+
+}
+
+
+public enum AerialKickState
+{
+    PRISTINE,
+    ON_COUNT,
+    TOUCHED
 }

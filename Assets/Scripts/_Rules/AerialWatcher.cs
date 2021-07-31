@@ -45,7 +45,6 @@ public class AerialWatcher : MonoBehaviour
             {
                 _hasJumped = true;
                 ++_jumpQuantity;
-                Debug.Log($"Has jumped {_jumpQuantity} times.");
             } 
         }
         else
@@ -59,6 +58,7 @@ public class AerialWatcher : MonoBehaviour
         Debug.DrawRay(_carInstance.transform.localPosition, Vector3.up * -1, Color.red);
         if (!Physics.Raycast(_carInstance.transform.localPosition, Vector3.up * -1, 4.0f))
         {
+            Debug.Log("Aerial made!");
             aerialMade = true;
         }
     }
