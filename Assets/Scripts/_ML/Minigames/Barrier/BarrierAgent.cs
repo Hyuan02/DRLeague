@@ -75,7 +75,7 @@ public class BarrierAgent : Agent, IInputSignals
             //car spacial stats 
             sensor.AddObservation(_carInstance.stats.isCanDrive);
             sensor.AddObservation(_carInstance.stats.isBodySurface);
-            sensor.AddObservation(_carInstance.stats.wheelsSurface);
+            sensor.AddObservation(_carInstance.stats.wheelsSurface/4);
             // sensor.AddObservation(_carInstance.canMove);
             //car jump stats
             sensor.AddObservation(_carInstance.stats.isJumping);
@@ -88,13 +88,13 @@ public class BarrierAgent : Agent, IInputSignals
             sensor.AddObservation(_carInstance.stats.currentSteerAngle/34.5f);
 
             //car transform stats
-            sensor.AddObservation(_carInstance.transform.localEulerAngles/360.0f);
+            sensor.AddObservation(_carInstance.transform.localEulerAngles/180.0f - Vector3.one);
         }
 
         if (_ballInstance)
         {
             sensor.AddObservation((_carInstance.transform.position - _ballInstance.transform.position)/65f);
-            sensor.AddObservation(_ballInstance.BallVelocity);
+            sensor.AddObservation(_ballInstance.BallVelocity.normalized);
         }
 
         if (_barrierInstance)
