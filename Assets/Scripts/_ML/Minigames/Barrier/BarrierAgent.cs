@@ -76,16 +76,16 @@ public class BarrierAgent : Agent, IInputSignals
             sensor.AddObservation(_carInstance.stats.isCanDrive);
             sensor.AddObservation(_carInstance.stats.isBodySurface);
             sensor.AddObservation(_carInstance.stats.wheelsSurface);
-            sensor.AddObservation(_carInstance.canMove);
+            // sensor.AddObservation(_carInstance.canMove);
             //car jump stats
             sensor.AddObservation(_carInstance.stats.isJumping);
             //car boost stats
-            sensor.AddObservation(_carInstance.stats.boostQuantity);
+            sensor.AddObservation(_carInstance.stats.boostQuantity/100f);
             sensor.AddObservation(_carInstance.stats.isBoosting);
             //car move stats
-            sensor.AddObservation(_carInstance.stats.forwardSpeedSign);
-            sensor.AddObservation((_carInstance.stats.forwardSpeedAbs - 0) / (Constants.Instance.MaxSpeed));
-            sensor.AddObservation(_carInstance.stats.currentSteerAngle);
+            sensor.AddObservation((_carInstance.stats.forwardSpeedSign + 1)/2);
+            sensor.AddObservation((_carInstance.stats.forwardSpeed) / (Constants.Instance.MaxSpeed));
+            sensor.AddObservation(_carInstance.stats.currentSteerAngle/34.5f);
 
             //car transform stats
             sensor.AddObservation(_carInstance.transform.localEulerAngles/360.0f);
@@ -93,18 +93,18 @@ public class BarrierAgent : Agent, IInputSignals
 
         if (_ballInstance)
         {
-            sensor.AddObservation(_carInstance.transform.position - _ballInstance.transform.position);
+            sensor.AddObservation((_carInstance.transform.position - _ballInstance.transform.position)/65f);
             sensor.AddObservation(_ballInstance.BallVelocity);
         }
 
         if (_barrierInstance)
         {
-            sensor.AddObservation(_ballInstance.transform.position - _barrierInstance.position);
+            sensor.AddObservation((_ballInstance.transform.position - _barrierInstance.position)/65f);
         }
 
         if (_goalpost)
         {
-            sensor.AddObservation(_ballInstance.transform.position - _goalpost.position);
+            sensor.AddObservation((_ballInstance.transform.position - _goalpost.position)/65f);
         }
 
     }

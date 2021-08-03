@@ -71,35 +71,35 @@ public class AerialAgent : Agent, IInputSignals
         if (_carInstance)
         {
             ///car spacial stats 
-            sensor.AddObservation(_carInstance.stats.isCanDrive);
-            sensor.AddObservation(_carInstance.stats.isBodySurface);
-            sensor.AddObservation(_carInstance.stats.wheelsSurface);
-            sensor.AddObservation(_carInstance.canMove);
+            sensor.AddObservation(_carInstance.stats.isCanDrive); // 0 ou 1
+            sensor.AddObservation(_carInstance.stats.isBodySurface); // 0 ou 1
+            sensor.AddObservation(_carInstance.stats.wheelsSurface/4); // 0 ate 4 
+           // sensor.AddObservation(_carInstance.canMove); // 0 ou 1
             ///car jump stats
             //sensor.AddObservation(_carInstance.stats.canFirstJump);
             //sensor.AddObservation(_carInstance.stats.canKeepJumping);
-            sensor.AddObservation(_carInstance.stats.isJumping);
+            sensor.AddObservation(_carInstance.stats.isJumping); // 0 ou 1 
             //sensor.AddObservation(_carInstance.stats.canDoubleJump);
             //sensor.AddObservation(_carInstance.stats.hasDoubleJump);
             //car boost stats
-            sensor.AddObservation(_carInstance.stats.boostQuantity);
-            sensor.AddObservation(_carInstance.stats.isBoosting);
+            sensor.AddObservation(_carInstance.stats.boostQuantity/100f); // 0 a 100
+            sensor.AddObservation(_carInstance.stats.isBoosting); // 0 a 1 
             //car move stats
-            sensor.AddObservation(_carInstance.stats.forwardSpeedSign);
-            sensor.AddObservation((_carInstance.stats.forwardSpeedAbs - 0)/(Constants.Instance.MaxSpeed));
-            sensor.AddObservation(_carInstance.stats.currentSteerAngle);
+            sensor.AddObservation((_carInstance.stats.forwardSpeedSign + 1)/2); 
+            sensor.AddObservation((_carInstance.stats.forwardSpeed)/(Constants.Instance.MaxSpeed));
+            sensor.AddObservation((_carInstance.stats.currentSteerAngle)/34.5f); // -34.5 a 34.5
 
             ///car transform stats
-            sensor.AddObservation(_carInstance.transform.localEulerAngles/360.0f);
+            sensor.AddObservation(_carInstance.transform.localEulerAngles/180.0f - Vector3.one);
         }
 
         if (_ballInstance)
         {
 
             ///ball related to agent
-            sensor.AddObservation(_carInstance.transform.position - _ballInstance.transform.position);
+            sensor.AddObservation((_carInstance.transform.position - _ballInstance.transform.position)/65f);
 
-            sensor.AddObservation(_ballInstance.BallVelocity);
+            sensor.AddObservation(_ballInstance.BallVelocity.normalized);
             sensor.AddOneHotObservation((int)_ballInstance.State, 2);
 
         }
@@ -107,7 +107,7 @@ public class AerialAgent : Agent, IInputSignals
         if (_goalpost)
         {
             ///ball related to goal
-            sensor.AddObservation(_goalpost.transform.position - _ballInstance.transform.position);
+            sensor.AddObservation((_goalpost.transform.position - _ballInstance.transform.position)/65f);
         }
 
         if (_watcher)
