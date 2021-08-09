@@ -1,7 +1,7 @@
 using UnityEngine;
 
+// This code was developed in the RoboLeague project: https://github.com/roboserg/RoboLeague/blob/master/Assets/Scripts/RoboUtils.cs
 
-// TODO ADD TEXT REFERENCING
 public static class RoboUtils
 {
     public static float Scale(float oldMin, float oldMax, float newMin, float newMax, float oldValue)

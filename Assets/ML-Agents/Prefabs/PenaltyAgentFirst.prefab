@@ -147,88 +147,6 @@ TrailRenderer:
   m_MinVertexDistance: 0.1
   m_Autodestruct: 0
   m_Emitting: 1
---- !u!1 &1080190717437703560
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1080190717437703563}
-  - component: {fileID: 1080190717437703565}
-  - component: {fileID: 1080190717437703562}
-  m_Layer: 8
-  m_Name: Mesh
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1080190717437703563
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1080190717437703560}
-  m_LocalRotation: {x: 5.8689752e-15, y: -1, z: -0.00000008146034, w: 0.0000001490116}
-  m_LocalPosition: {x: -0, y: 0, z: 0}
-  m_LocalScale: {x: 13.049627, y: 13.049627, z: 13.049627}
-  m_Children: []
-  m_Father: {fileID: 1080190717560467170}
-  m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: -180.00002, z: 0}
---- !u!33 &1080190717437703565
-MeshFilter:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1080190717437703560}
-  m_Mesh: {fileID: 2959467708922500008, guid: 6d9bd5c0dd748bb48a17da75e5ff3b68, type: 3}
---- !u!23 &1080190717437703562
-MeshRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1080190717437703560}
-  m_Enabled: 1
-  m_CastShadows: 1
-  m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
-  m_MotionVectors: 1
-  m_LightProbeUsage: 1
-  m_ReflectionProbeUsage: 1
-  m_RayTracingMode: 2
-  m_RayTraceProcedural: 0
-  m_RenderingLayerMask: 1
-  m_RendererPriority: 0
-  m_Materials:
-  - {fileID: 2100000, guid: f609d63cf4f537d479a66307cdba15e7, type: 2}
-  - {fileID: 2100000, guid: c557718ddae595545b64335bda5d99f1, type: 2}
-  m_StaticBatchInfo:
-    firstSubMesh: 0
-    subMeshCount: 0
-  m_StaticBatchRoot: {fileID: 0}
-  m_ProbeAnchor: {fileID: 0}
-  m_LightProbeVolumeOverride: {fileID: 0}
-  m_ScaleInLightmap: 1
-  m_ReceiveGI: 1
-  m_PreserveUVs: 0
-  m_IgnoreNormalsForChartDetection: 0
-  m_ImportantGI: 0
-  m_StitchLightmapSeams: 1
-  m_SelectedEditorRenderState: 3
-  m_MinimumChartSize: 4
-  m_AutoUVMaxDistance: 0.5
-  m_AutoUVMaxAngle: 89
-  m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
-  m_SortingOrder: 0
-  m_AdditionalVertexStreams: {fileID: 0}
 --- !u!1 &1080190717461150353
 GameObject:
   m_ObjectHideFlags: 0
@@ -5093,7 +5011,6 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1080190718551701888}
-  - {fileID: 1080190717560467170}
   m_Father: {fileID: 1080190718663221219}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -9913,37 +9830,6 @@ ParticleSystemRenderer:
   m_Mesh2: {fileID: 0}
   m_Mesh3: {fileID: 0}
   m_MaskInteraction: 0
---- !u!1 &1080190717560467171
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1080190717560467170}
-  m_Layer: 8
-  m_Name: Fennec
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 0
---- !u!4 &1080190717560467170
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1080190717560467171}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: -0.089999914, z: 0.077999115}
-  m_LocalScale: {x: 0.9445515, y: 0.9445515, z: 0.9445515}
-  m_Children:
-  - {fileID: 1080190717437703563}
-  m_Father: {fileID: 1080190717512467805}
-  m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1080190717627093010
 GameObject:
   m_ObjectHideFlags: 0
@@ -20523,12 +20409,12 @@ GameObject:
   - component: {fileID: 1080190718663221221}
   - component: {fileID: 1080190718663221242}
   m_Layer: 8
-  m_Name: CarAgent
+  m_Name: PenaltyAgentFirst
   m_TagString: Car
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1080190718663221219
 Transform:
   m_ObjectHideFlags: 0
@@ -20585,6 +20471,7 @@ MonoBehaviour:
   _gameManager: {fileID: 0}
   _carInstance: {fileID: 1080190718663221216}
   _ballInstance: {fileID: 0}
+  _goalpost: {fileID: 0}
   timeToWaitBeforeRestart: 15
 --- !u!114 &1080190718663221216
 MonoBehaviour:
@@ -20615,6 +20502,8 @@ MonoBehaviour:
     canFirstJump: 0
     isJumping: 0
     canKeepJumping: 0
+    canDoubleJump: 0
+    hasDoubleJump: 0
     boostQuantity: 0
     isBoosting: 0
   colliders:
