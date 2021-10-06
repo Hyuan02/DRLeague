@@ -30,12 +30,21 @@ After import it on Unity, you can go to the directory **Assets/Scenes** and see 
 
 Going to the *MLScenes* folder, you can see the Scenes integrated with the MLAgents framework, related to the implemented minigames. Opening the `PenaltyScene` for example: 
 
-![Scenes Folder](images/Environment1.png)
+![Scene](images/Environment1.png)
 
 The Object `GameManagerToExperiment` has a environment with a pre-trained agent, showing a example of the integration. You can press Play in the scene and see the autonomous behavior running. 
 
 ### Training a Agent
-To be added.
+To train a new brain, we use the [ML-Agents Trainer](https://github.com/Unity-Technologies/ml-agents/blob/main/docs/Training-ML-Agents.md). You can see a tutorial of how to install it [here](https://github.com/Unity-Technologies/ml-agents/blob/main/docs/Installation.md#install-the-mlagents-python-package).
+
+Select one of three scenes of `MLScenes` folder. Disable the `GameManagerToExperiment` object and enable the `TrainingContainer`. After this, you can see several environments in the scene view: 
+![Environment](images/Environment2.png)
+
+Now, open a prompt, according to your installation mode, and run the following command: 
+
+` mlagents-learn <path/to/your/file.yaml> --run-id=<YourName>`
+
+You should see the instances playing the game.
 
 ## Demo
 
