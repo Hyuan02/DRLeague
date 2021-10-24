@@ -13,7 +13,10 @@ public class PenaltyInteractor : MonoBehaviour
 
 
     [SerializeField]
-    PenaltyManager _instance;
+    RuleManager _instance;
+
+    [SerializeField]
+    IPenaltyInteractions _interactor;
 
     [SerializeField]
     Rigidbody _rBody;
@@ -28,6 +31,13 @@ public class PenaltyInteractor : MonoBehaviour
 
     float _secondsCounted = 0;
 
+    private void Awake()
+    {
+        if (_instance)
+        {
+            _interactor = _instance.GetComponent<IPenaltyInteractions>();
+        }
+    }
     private void Start()
     {
         _rBody = this.GetComponentInParent<Rigidbody>();
@@ -48,7 +58,7 @@ public class PenaltyInteractor : MonoBehaviour
     {
         if (other.CompareTag("BodyCollider") || other.CompareTag("SphereCollider"))
         {
-            _instance.OnTouchedBall();
+            _interactor.OnTouchedBall();
             state = BallPenaltyState.TOUCHED;
         }
     }
@@ -69,7 +79,7 @@ public class PenaltyInteractor : MonoBehaviour
         {
             _secondsCounted = 0;
             state = BallPenaltyState.PRISTINE;
-            _instance.OnStoppedBall();
+            _interactor.OnStoppedBall();
             
         }
         
