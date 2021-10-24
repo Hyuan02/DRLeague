@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 
-public class PenaltyManager : RuleManager
+public class PenaltyManager : RuleManager, IPenaltyInteractions
 {
     [SerializeField]
     CarManager _carAgent;

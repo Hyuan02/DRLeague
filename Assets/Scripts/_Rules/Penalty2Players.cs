@@ -4,7 +4,7 @@ using UnityEngine;
 using Cinemachine;
 using System;
 
-public class Penalty2Players : RuleManager
+public class Penalty2Players : RuleManager, IPenaltyInteractions
 {
     [SerializeField]
     List<CarManager> _carAgents = new List<CarManager>();
