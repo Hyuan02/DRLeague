@@ -113,6 +113,9 @@ public class Penalty2Players : RuleManager, IPenaltyInteractions
 
     void SetCamera(Transform toSet)
     {
+        if (!camera)
+            return;
+
         camera.m_Follow = toSet;
         camera.m_LookAt = toSet;
     }
