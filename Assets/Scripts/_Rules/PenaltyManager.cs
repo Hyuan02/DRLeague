@@ -11,6 +11,9 @@ public class PenaltyManager : RuleManager, IPenaltyInteractions
     [SerializeField]
     BallManager _ball;
 
+    [SerializeField]
+    bool stopMove = true;
+
 
 
     [Header ("Car Random Atributtes")]
@@ -61,7 +64,7 @@ public class PenaltyManager : RuleManager, IPenaltyInteractions
         _carAgent.ResetCarState();
         Vector3 newPosition = GenerateRandomCarPosition();
         newPosition.y = -7.1f;
-        _carAgent.SetToPositionAndRotation(newPosition, Quaternion.Euler(0,90,0));
+        _carAgent.SetToPositionAndRotation(newPosition, null);
         _carAgent.canMove = true;
     }
 
@@ -76,7 +79,8 @@ public class PenaltyManager : RuleManager, IPenaltyInteractions
 
     public void OnTouchedBall()
     {
-        _carAgent.canMove = false;
+        if(stopMove)
+            _carAgent.canMove = false;
     }
 
     public void OnStoppedBall()

@@ -32,7 +32,8 @@ public class CarManager : MonoBehaviour
 
     private IInputSignals _controllerInterface;
 
-    Vector3 _defaultPosition; 
+    Vector3 _defaultPosition;
+    Quaternion _defaultRotation;
 
 
     // Start is called before the first frame update
@@ -43,6 +44,8 @@ public class CarManager : MonoBehaviour
         _rBody.maxAngularVelocity = Constants.MaxAngularVelocity;
 
         _defaultPosition = this.transform.localPosition;
+        _defaultRotation = this.transform.localRotation;
+
 
         stats.boostQuantity = 100f;
 
@@ -119,7 +122,7 @@ public class CarManager : MonoBehaviour
         _rBody.angularVelocity = Vector3.zero;
 
         transform.localPosition = _defaultPosition;
-        transform.localRotation = Quaternion.identity;
+        transform.localRotation = _defaultRotation;
         stats.forwardSpeed = 0;
         stats.forwardAcceleration = 0;
         stats.boostQuantity = 100;

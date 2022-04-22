@@ -5,7 +5,19 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
+  - enabled: 0
+    path: 
+    guid: 00000000000000000000000000000000
+  - enabled: 0
+    path: Assets/Scenes/MLScenes/MultiplayerScenes/PenaltySceneCompetitive.unity
+    guid: 8f40784a1ed406945a1f3577a158ab5b
+  - enabled: 0
+    path: Assets/Scenes/MLScenes/MultiplayerScenes/PenaltySceneCompetitiveContinuous.unity
+    guid: 958010dad6fed014a9332ba187c652df
   - enabled: 1
-    path: Assets/Scenes/SampleScene.unity
-    guid: d1c3109bdb54ad54c8a2b2838528e640
+    path: Assets/Scenes/MLScenes/MultiplayerScenes/PenaltySceneCompetitiveContinuousOpposite.unity
+    guid: 1725ebba4886682439487365a3894a2f
+  - enabled: 0
+    path: Assets/Scenes/MLScenes/PenaltySceneDistant.unity
+    guid: 08893aa7f965af843979e29dab0aac28
   m_configObjects: {}

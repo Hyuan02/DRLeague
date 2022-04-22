@@ -5,7 +5,7 @@ using Unity.MLAgents;
 using Unity.MLAgents.Actuators;
 using Unity.MLAgents.Sensors;
 
-public class PenaltyAgent : Agent, IInputSignals
+public class PenaltyAgentDistant : Agent, IInputSignals
 {
 
     [SerializeField]
@@ -23,6 +23,7 @@ public class PenaltyAgent : Agent, IInputSignals
     [SerializeField]
     float timeToWaitBeforeRestart = 15f;
     float _timeWaitedToRestart = 0f;
+    float previousDistance = float.MaxValue;
 
 
 
@@ -49,6 +50,12 @@ public class PenaltyAgent : Agent, IInputSignals
         //Debug.Log("Getting actions!");
         currentContinousActions = actionBuffers.ContinuousActions;
         currentDiscreteActions = actionBuffers.DiscreteActions;
+        var actualDistance = ExtractDistanceOfPoints();
+        if (previousDistance > actualDistance) {
+            this.AddReward(0.05f);
+        }
+        previousDistance = actualDistance;
+
 
         this.AddReward(-0.01f);
     }
@@ -98,12 +105,14 @@ public class PenaltyAgent : Agent, IInputSignals
 
         if (_ballInstance)
         {
-            sensor.AddObservation(_carInstance.transform.position - _ballInstance.transform.position);
+            sensor.AddObservation(Vector3.Distance(_carInstance.transform.position, _ballInstance.transform.position));
+            //sensor.AddObservation(_carInstance.transform.position - _ballInstance.transform.position);
         }
 
         if (_goalpost)
         {
-            sensor.AddObservation(_ballInstance.transform.position - _goalpost.position);
+            sensor.AddObservation(Vector3.Distance(_ballInstance.transform.position, _goalpost.position));
+            //sensor.AddObservation(_ballInstance.transform.position - _goalpost.position);
         }
     }
 
@@ -149,5 +158,10 @@ public class PenaltyAgent : Agent, IInputSignals
         discreteActions[0] = InputController.jumpInput ? 1 : 0;
         discreteActions[1] = InputController.boostInput ? 1 : 0;
         discreteActions[2] = InputController.GetDriftInput ? 1 : 0;
+    }
+
+
+    public float ExtractDistanceOfPoints() {
+        return Vector3.Distance(_ballInstance.transform.position, _goalpost.position);
     }
 }

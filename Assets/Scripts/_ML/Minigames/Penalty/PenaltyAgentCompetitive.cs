@@ -5,7 +5,7 @@ using Unity.MLAgents;
 using Unity.MLAgents.Actuators;
 using Unity.MLAgents.Sensors;
 
-public class PenaltyAgent : Agent, IInputSignals
+public class PenaltyAgentCompetitive : Agent, IInputSignals
 {
 
     [SerializeField]
@@ -20,28 +20,20 @@ public class PenaltyAgent : Agent, IInputSignals
     ActionSegment<float> currentContinousActions = ActionSegment<float>.Empty;
     ActionSegment<int> currentDiscreteActions = ActionSegment<int>.Empty;
 
-    [SerializeField]
-    float timeToWaitBeforeRestart = 15f;
-    float _timeWaitedToRestart = 0f;
+    
 
 
 
     void Start()
     {
-        _gameManager.onGoalHappened += RewardCondition;
+        //_gameManager.onGoalHappened += RewardCondition;
         _gameManager.onGameStarted += StartRoutine;
-        _gameManager.onGameFinished += BadEndRoutine;
-    }
-
-    void FixedUpdate()
-    {
-        CountTimeToRestart();
+        //_gameManager.onGameFinished += BadEndRoutine;
     }
 
     public override void OnEpisodeBegin()
     {
         //Debug.Log("Begin episode!");
-        _timeWaitedToRestart = 0;
     }
 
     public override void OnActionReceived(ActionBuffers actionBuffers)
@@ -60,11 +52,56 @@ public class PenaltyAgent : Agent, IInputSignals
     }
 
     #region INPUTS_IMPLEMENTATIONS
-    public float GetForwardSignal() => currentContinousActions.Length > 0? currentContinousActions[0] : 0;
-    public float GetTurnSignal() => currentContinousActions.Length > 0? currentContinousActions[1] : 0;
-    public bool GetJumpSignal() => currentDiscreteActions.Length > 0? (currentDiscreteActions[0] > 0?  true : false) : false;
-    public bool GetBoostSignal() => currentDiscreteActions.Length > 0 ? (currentDiscreteActions[1] > 0 ? true : false) : false;
-    public bool GetDriftSignal() => currentDiscreteActions.Length > 0 ? (currentDiscreteActions[2] > 0 ? true : false) : false;
+    public float GetForwardSignal() {
+        if (currentDiscreteActions.Length > 0) {
+            if (currentDiscreteActions[0] == 1)
+            {
+                return 0;
+
+            }
+            else if (currentDiscreteActions[0] == 2)
+            {
+
+                return 1;
+            }
+            else if (currentDiscreteActions[0] == 3) {
+
+                return -1;
+            }
+        }
+            return 0;
+    
+    }
+    public float GetTurnSignal() {
+
+        if (currentDiscreteActions.Length > 0) {
+            if (currentDiscreteActions[1] == 1) {
+
+                return 0;
+            
+            }
+
+            else if (currentDiscreteActions[1] == 2)
+            {
+
+                return 1;
+
+            }
+
+            else if (currentDiscreteActions[1] == 3)
+            {
+
+                return -1;
+
+            }
+        }
+
+        return 0;
+    
+    }
+    public bool GetJumpSignal() => currentDiscreteActions.Length > 0? (currentDiscreteActions[2] > 0?  true : false) : false;
+    public bool GetBoostSignal() => currentDiscreteActions.Length > 0 ? (currentDiscreteActions[3] > 0 ? true : false) : false;
+    public bool GetDriftSignal() => currentDiscreteActions.Length > 0 ? (currentDiscreteActions[4] > 0 ? true : false) : false;
     #endregion
 
 
@@ -124,30 +161,44 @@ public class PenaltyAgent : Agent, IInputSignals
         EndEpisode();
     }
 
-    private void CountTimeToRestart()
-    {
-        _timeWaitedToRestart += Time.fixedDeltaTime;
-        if (_timeWaitedToRestart >= timeToWaitBeforeRestart)
-        {
-            _gameManager.EndCondition();
-            _gameManager.StartCondition();
-        }
-
-    }
-
     public override void Heuristic(in ActionBuffers actionsOut)
     {
         base.Heuristic(actionsOut);
 
-        var continousActions = actionsOut.ContinuousActions;
+        //var continousActions = actionsOut.ContinuousActions;
 
-        continousActions[0] = InputController.forwardInput;
-        continousActions[1] = InputController.turnInput;
 
         var discreteActions = actionsOut.DiscreteActions;
 
-        discreteActions[0] = InputController.jumpInput ? 1 : 0;
-        discreteActions[1] = InputController.boostInput ? 1 : 0;
-        discreteActions[2] = InputController.GetDriftInput ? 1 : 0;
+        if (InputController.forwardInput > 0.2)
+        {
+            discreteActions[0] = 2;
+        }
+        else if (InputController.forwardInput < -0.2)
+        {
+            discreteActions[0] = 3;
+        }
+        else {
+            discreteActions[0] = 1;
+
+        }
+
+        if (InputController.turnInput > 0.2)
+        {
+            discreteActions[1] = 2;
+        }
+        else if (InputController.turnInput < -0.2)
+        {
+            discreteActions[1] = 3;
+        }
+        else
+        {
+            discreteActions[1] = 1;
+
+        }
+        discreteActions[2] = InputController.jumpInput ? 1 : 0;
+        discreteActions[3] = InputController.boostInput ? 1 : 0;
+        discreteActions[4] = InputController.GetDriftInput ? 1 : 0;
     }
+
 }
