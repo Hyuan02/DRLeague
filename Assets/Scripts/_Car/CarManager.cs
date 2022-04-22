@@ -48,9 +48,6 @@ public class CarManager : MonoBehaviour
 
 
         stats.boostQuantity = 100f;
-
-        _controllerInterface = this.GetComponent<IInputSignals>();
-        Debug.Log(_controllerInterface);
     }
 
 
@@ -58,6 +55,10 @@ public class CarManager : MonoBehaviour
     {
         DetermineCarState();
         UpdateStats();
+    }
+
+    public void SetControllerInterface(IInputSignals controller) {
+        _controllerInterface = controller;
     }
 
 

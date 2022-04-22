@@ -5,7 +5,7 @@ using Unity.MLAgents;
 using Unity.MLAgents.Actuators;
 using Unity.MLAgents.Sensors;
 
-public class PenaltyAgentCompetitiveContinuuous : Agent, IInputSignals
+public class PenaltyAgentCompetitiveContinuuous : CarAgent
 {
 
     [SerializeField]
@@ -18,31 +18,19 @@ public class PenaltyAgentCompetitiveContinuuous : Agent, IInputSignals
     Transform _goalpost;
 
     float previousDistance = float.MaxValue;
-
-    ActionSegment<float> currentContinousActions = ActionSegment<float>.Empty;
-    ActionSegment<int> currentDiscreteActions = ActionSegment<int>.Empty;
-
     
-
-
-
     void Start()
     {
-        //_gameManager.onGoalHappened += RewardCondition;
         _gameManager.onGameStarted += StartRoutine;
-        //_gameManager.onGameFinished += BadEndRoutine;
     }
 
     public override void OnEpisodeBegin()
     {
-        //Debug.Log("Begin episode!");
     }
 
     public override void OnActionReceived(ActionBuffers actionBuffers)
     {
-        //Debug.Log("Getting actions!");
-        currentContinousActions = actionBuffers.ContinuousActions;
-        currentDiscreteActions = actionBuffers.DiscreteActions;
+        InputSignal.UpdateSignals(actionBuffers);
         var actualDistance = ExtractDistanceOfPoints();
         if (previousDistance > actualDistance)
         {
@@ -58,13 +46,6 @@ public class PenaltyAgentCompetitiveContinuuous : Agent, IInputSignals
         TransmitObservations(sensor);
     }
 
-    #region INPUTS_IMPLEMENTATIONS
-    public float GetForwardSignal() => currentContinousActions.Length > 0 ? currentContinousActions[0] : 0;
-    public float GetTurnSignal() => currentContinousActions.Length > 0 ? currentContinousActions[1] : 0;
-    public bool GetJumpSignal() => currentDiscreteActions.Length > 0? (currentDiscreteActions[0] > 0?  true : false) : false;
-    public bool GetBoostSignal() => currentDiscreteActions.Length > 0 ? (currentDiscreteActions[1] > 0 ? true : false) : false;
-    public bool GetDriftSignal() => currentDiscreteActions.Length > 0 ? (currentDiscreteActions[2] > 0 ? true : false) : false;
-    #endregion
 
 
     private void TransmitObservations(VectorSensor sensor)
@@ -129,7 +110,6 @@ public class PenaltyAgentCompetitiveContinuuous : Agent, IInputSignals
 
     public override void Heuristic(in ActionBuffers actionsOut)
     {
-        base.Heuristic(actionsOut);
 
         var continousActions = actionsOut.ContinuousActions;
 
