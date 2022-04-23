@@ -2,28 +2,26 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent(typeof(CarManager))]
 public class JumpingController : MonoBehaviour
 {
-    Rigidbody _rBody;
-    CarManager _instance;
-
-    float _jumpTimer = 0.2f;
-    bool turningCarEffect = false;
-
-
+    private Rigidbody _rBody;
+    private CarManager _instance;
+    private float _jumpTimer = 0.2f;
+    private bool _turningCarEffect = false;
 
     private void Start()
     {
-        _rBody = this.GetComponent<Rigidbody>();
         _instance = this.GetComponent<CarManager>();
+        _rBody = _instance.rBody;
     }
 
     private void FixedUpdate()
     {
-        if (!turningCarEffect)
+        if (!_turningCarEffect)
         {
             CheckAirStatus();
-            ControlJump();
+            ControlJump(_instance.signalClient.GetJumpSignal());
         }
         else
         {
@@ -32,9 +30,9 @@ public class JumpingController : MonoBehaviour
     }
 
 
-    private void ControlJump()
+    private void ControlJump(bool hasJumpingInput)
     {
-        if(_instance.GetJumpSignal() && _instance.stats.canFirstJump)
+        if(hasJumpingInput && _instance.stats.canFirstJump)
         {
             _instance.stats.canFirstJump = false;
             _rBody.AddForce(transform.up * Constants.InitalJumpTorque * Constants.JumpForceMultiplier, ForceMode.VelocityChange);
@@ -42,33 +40,29 @@ public class JumpingController : MonoBehaviour
             _instance.stats.isJumping = true;
         }
 
-        if (_instance.GetJumpSignal() && _instance.stats.isJumping && _instance.stats.canKeepJumping && _jumpTimer >= 0.05f && _jumpTimer <= 0.14f)
+        if (hasJumpingInput && _instance.stats.isJumping && _instance.stats.canKeepJumping && _jumpTimer >= 0.05f && _jumpTimer <= 0.14f)
         {
             _rBody.AddForce(transform.up * Constants.MidJumpTorque * Constants.JumpForceMultiplier, ForceMode.Acceleration);
         }
 
-        if (_instance.GetJumpSignal() && _instance.stats.isJumping && _jumpTimer >= 0.2f && _instance.stats.canDoubleJump && !_instance.stats.hasDoubleJump) {
+        if (hasJumpingInput && _instance.stats.isJumping && _jumpTimer >= 0.2f && _instance.stats.canDoubleJump && !_instance.stats.hasDoubleJump) {
             _rBody.AddForce(transform.up * Constants.InitalJumpTorque * Constants.JumpForceMultiplier, ForceMode.VelocityChange);
             _instance.stats.canDoubleJump = false;
             _instance.stats.hasDoubleJump = true;
         }
 
-        if (_instance.GetJumpSignal() && _instance.carState.Equals(CarStates.BodyGroundDead)) {
-            turningCarEffect = true;
-
+        if (hasJumpingInput && _instance.stats.CarState.Equals(CarState.BodyGroundDead)) {
+            _turningCarEffect = true;
         }
 
-        if (_instance.stats.isJumping && !_instance.GetJumpSignal())
+        if (_instance.stats.isJumping && !hasJumpingInput)
         {
             _instance.stats.canDoubleJump = true;
         }
-        else if (!_instance.GetJumpSignal())
+        else if (!hasJumpingInput)
         {
             _instance.stats.canKeepJumping = false;
         }
-
-       
-
     }
 
 
@@ -83,8 +77,7 @@ public class JumpingController : MonoBehaviour
                 _instance.stats.hasDoubleJump = false;
                 _jumpTimer = 0f;
                 _instance.stats.canFirstJump = true;
-            }
-                
+            }   
         }
         else
         {
@@ -97,12 +90,10 @@ public class JumpingController : MonoBehaviour
     {
         Vector3 projection = Vector3.ProjectOnPlane(transform.forward, Vector3.up);
         Quaternion rotationToGround = Quaternion.LookRotation(projection, Vector3.up);
-
         _rBody.MoveRotation(Quaternion.Lerp(_rBody.rotation, rotationToGround, Time.fixedDeltaTime * 5f));
-
         if((transform.up - Vector3.up).magnitude < 0.1f)
         {
-            turningCarEffect = false;
+            _turningCarEffect = false;
         }
     }
 }

@@ -4,11 +4,9 @@ using UnityEngine;
 
 public class PlayerSignalSetup: InputSignalSetup
 {
-    [SerializeField]
-    private CarManager _managerToDeliver;
-    protected override void SetupInputSignals()
+    protected override void SetupInputSignals(SignalClient signalToSetup)
     {
-        _managerToDeliver.SetControllerInterface(new PlayerInputSignal());
+        signalToSetup.SetControllerInterface(new PlayerInputSignal());
     }
 
 }

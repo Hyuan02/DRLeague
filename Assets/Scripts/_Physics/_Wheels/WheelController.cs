@@ -26,6 +26,7 @@ public class WheelController : MonoBehaviour
     [SerializeField]
     private WheelPosition _wheelPosition;
 
+
     private float _meshRevolutionAngle;
 
     private float _forceCurve = 0;
@@ -36,8 +37,8 @@ public class WheelController : MonoBehaviour
 
     private void Start()
     {
-        _rBody = this.GetComponentInParent<Rigidbody>();
         _manager = this.GetComponentInParent<CarManager>();
+        _rBody = _manager.rBody;
         _controller = this.GetComponentInParent<GroundController>();
         _wheelRadius = transform.localScale.z / 2;
     }
@@ -97,7 +98,7 @@ public class WheelController : MonoBehaviour
 
     private void AddDragForce()
     {
-        float dragForce = Constants.BrakeAcceleration / 4 * _manager.stats.forwardSpeedSign * (1 - _manager.GetForwardSignal());
+        float dragForce = Constants.BrakeAcceleration / 4 * _manager.stats.forwardSpeedSign * (1 - _manager.signalClient.GetForwardSignal());
         _rBody.AddForce(-dragForce * transform.forward, ForceMode.Acceleration);
     }
 

@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+
+[RequireComponent(typeof(CarManager))]
 public class BoostingController : MonoBehaviour
 {
 
@@ -16,17 +18,23 @@ public class BoostingController : MonoBehaviour
     private void Start()
     {
         _instance = this.GetComponent<CarManager>();
-        _rBody = this.GetComponent<Rigidbody>();
-
-
+        _rBody = _instance.rBody;
     }
 
     private void FixedUpdate()
     {
-        if (_instance.GetBoostSignal())
+        BoostRoutine(_instance.signalClient.GetBoostSignal());
+    }
+
+    void BoostRoutine(bool hasBoostingInput) {
+        if (hasBoostingInput)
+        {
             UseBoost();
+        }
         else
+        {
             BoostRecovering();
+        }
     }
 
 
@@ -41,7 +49,7 @@ public class BoostingController : MonoBehaviour
     }
 
     void BoostRecovering() {
-        _instance.stats.boostQuantity = Mathf.Clamp(_instance.stats.boostQuantity + _boostRecoveringRate * Time.fixedDeltaTime, 0, 100);
         _instance.stats.isBoosting = false;
+        _instance.stats.boostQuantity = Mathf.Clamp(_instance.stats.boostQuantity + _boostRecoveringRate * Time.fixedDeltaTime, 0, 100);
     }
 }

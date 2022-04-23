@@ -3,41 +3,37 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-[RequireComponent(typeof(Rigidbody))]
+[RequireComponent(typeof(CarManager))]
 public class GroundController : MonoBehaviour
 {
 
     private Rigidbody _rBody;
     private CarManager _instance;
-
     private WheelController[] _wheels;
 
     private void Start()
     {
-        _rBody = this.GetComponent<Rigidbody>();
         _instance = this.GetComponent<CarManager>();
+        _rBody = _instance.rBody;
         _wheels = this.GetComponentsInChildren<WheelController>();
     }
 
     private void FixedUpdate()
     {
-        //ApplyDownForce();
-        CalculateDriftDrag();
-        _instance.stats.forwardAcceleration = CalcForwardForce(_instance.GetForwardSignal(), _instance.GetBoostSignal());
-        _instance.stats.currentSteerAngle = CalculateSteerAngle(_instance.GetTurnSignal());
-        //ApplyRotOnWheels();
-
+        _instance.stats.currentWheelSideFriction = CalculateDriftDrag(_instance.signalClient.GetDriftSignal()); ;
+        _instance.stats.forwardAcceleration = CalcForwardForce(_instance.signalClient.GetForwardSignal(), _instance.signalClient.GetBoostSignal());
+        _instance.stats.currentSteerAngle = CalculateSteerAngle(_instance.signalClient.GetTurnSignal());
     }
 
-    private void CalculateDriftDrag()
+    private float CalculateDriftDrag(bool driftInput)
     {
-        float currentDriftDrag = _instance.GetDriftSignal() ? _instance.stats.wheelSideFrictionDrift : _instance.stats.wheelSideFriction;
-        _instance.stats.currentWheelSideFriction = Mathf.MoveTowards(_instance.stats.currentWheelSideFriction, currentDriftDrag, Time.deltaTime * _instance.stats.driftTime);
+        float currentDriftDrag = driftInput ? _instance.stats.wheelSideFrictionDrift : _instance.stats.wheelSideFriction;
+        return Mathf.MoveTowards(_instance.stats.currentWheelSideFriction, currentDriftDrag, Time.deltaTime * _instance.stats.driftTime);
     }
 
     private void ApplyDownForce()
     {
-        if (_instance.carState == CarStates.AllWheelsSurface || _instance.carState == CarStates.AllWheelsGround)
+        if (_instance.stats.CarState == CarState.AllWheelsSurface || _instance.stats.CarState == CarState.AllWheelsGround)
             _rBody.AddForce(-transform.up * 5, ForceMode.Acceleration);
     }
 

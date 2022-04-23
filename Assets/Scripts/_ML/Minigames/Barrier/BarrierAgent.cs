@@ -5,7 +5,7 @@ using Unity.MLAgents;
 using Unity.MLAgents.Actuators;
 using Unity.MLAgents.Sensors;
 
-public class BarrierAgent : Agent, IInputSignals
+public class BarrierAgent : CarAgent
 {
     [SerializeField]
     RuleManager _gameManager;
@@ -19,9 +19,7 @@ public class BarrierAgent : Agent, IInputSignals
     Transform _goalpost;
 
 
-    ActionSegment<float> currentContinousActions = ActionSegment<float>.Empty;
-    ActionSegment<int> currentDiscreteActions = ActionSegment<int>.Empty;
-
+   
     [SerializeField]
     float timeToWaitBeforeRestart = 15f;
     float _timeWaitedToRestart = 0f;
@@ -47,8 +45,7 @@ public class BarrierAgent : Agent, IInputSignals
     public override void OnActionReceived(ActionBuffers actionBuffers)
     {
         //Debug.Log("Getting actions!");
-        currentContinousActions = actionBuffers.ContinuousActions;
-        currentDiscreteActions = actionBuffers.DiscreteActions;
+        base.OnActionReceived(actionBuffers);
 
         this.AddReward(-0.01f);
     }
@@ -59,13 +56,7 @@ public class BarrierAgent : Agent, IInputSignals
         TransmitObservations(sensor);
     }
 
-    #region INPUTS_IMPLEMENTATIONS
-    public float GetForwardSignal() => currentContinousActions.Length > 0 ? currentContinousActions[0] : 0;
-    public float GetTurnSignal() => currentContinousActions.Length > 0 ? currentContinousActions[1] : 0;
-    public bool GetJumpSignal() => currentDiscreteActions.Length > 0 ? (currentDiscreteActions[0] > 0 ? true : false) : false;
-    public bool GetBoostSignal() => currentDiscreteActions.Length > 0 ? (currentDiscreteActions[1] > 0 ? true : false) : false;
-    public bool GetDriftSignal() => currentDiscreteActions.Length > 0 ? (currentDiscreteActions[2] > 0 ? true : false) : false;
-    #endregion
+    
 
 
     private void TransmitObservations(VectorSensor sensor)

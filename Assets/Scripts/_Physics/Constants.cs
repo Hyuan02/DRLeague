@@ -31,6 +31,8 @@ public class Constants : MonoBehaviour
 
     public const float BoostForceMultiplier = 1f;
 
+    public const float InitialBoostQuantity = 100f;
+
     //particles
     public const int SupersonicThreshold = 22;
 
@@ -52,6 +54,8 @@ public class Constants : MonoBehaviour
     public const float Drag_Roll = -4.47166302201591f;
     public const float Drag_Pitch = -2.798194258050845f;
     public const float Drag_Yaw = -1.886491900437232f;
+
+
 
 
     public static Constants Instance;

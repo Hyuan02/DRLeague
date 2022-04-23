@@ -161,7 +161,7 @@ public class PenaltyCompetitiveOpposite : RuleManager, IPenaltyInteractions
         {
             int index = 0;
             e.ResetCarState();
-            e.canMove = true;
+            e.signalClient.CanEmitSignals = true;
             //Vector3 newPosition = GenerateRandomCarPosition(index);
             //newPosition.y = -7.1f;
             e.SetToPositionAndRotation(null, null);

@@ -8,14 +8,10 @@ public class AgentSignalSetup : InputSignalSetup
     [SerializeField]
     CarAgent _agentToDeliver;
 
-    [SerializeField]
-    CarManager _managerToDeliver;
-
-    protected override void SetupInputSignals()
+    protected override void SetupInputSignals(SignalClient clientToSetup)
     {
         AgentInputSignal newSignal = new AgentInputSignal();
+        clientToSetup.SetControllerInterface(newSignal);
         _agentToDeliver.InputSignal = newSignal;
-        _managerToDeliver.SetControllerInterface(newSignal);
-        
     }
 }

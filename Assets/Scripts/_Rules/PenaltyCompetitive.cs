@@ -161,7 +161,7 @@ public class PenaltyCompetitive : RuleManager, IPenaltyInteractions
         {
             int index = 0;
             e.ResetCarState();
-            e.canMove = true;
+            e.signalClient.CanEmitSignals = true;
             Vector3 newPosition = GenerateRandomCarPosition(index);
             newPosition.y = -7.1f;
             e.SetToPositionAndRotation(newPosition, Quaternion.Euler(0, 90, 0));
@@ -181,7 +181,7 @@ public class PenaltyCompetitive : RuleManager, IPenaltyInteractions
 
     public void OnTouchedBall()
     {
-        _carAgents.ForEach(e=>e.canMove = false);
+        _carAgents.ForEach(e=>e.signalClient.CanEmitSignals = false);
     }
 
     public void OnStoppedBall()

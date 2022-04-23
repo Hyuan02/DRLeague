@@ -75,7 +75,7 @@ public class Penalty2Players : RuleManager, IPenaltyInteractions
         Vector3 newPosition = GenerateRandomCarPosition();
         newPosition.y = -7.1f;
         _carAgents[playerIndex].SetToPositionAndRotation(newPosition, Quaternion.Euler(0, 90, 0));
-        _carAgents[playerIndex].canMove = true;
+        _carAgents[playerIndex].signalClient.CanEmitSignals = true;
     }
 
     void RandomizeBallPosition()
@@ -89,7 +89,7 @@ public class Penalty2Players : RuleManager, IPenaltyInteractions
 
     public void OnTouchedBall()
     {
-        _carAgents[playerIndex].canMove = false;
+        _carAgents[playerIndex].signalClient.CanEmitSignals = false;
     }
 
     public void OnStoppedBall()

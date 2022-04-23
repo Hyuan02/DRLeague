@@ -1,4 +1,4 @@
-public enum CarStates
+public enum CarState
 {
    AllWheelsGround,
    Air,
