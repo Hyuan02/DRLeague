@@ -13,4 +13,19 @@ public abstract class RuleManager : MonoBehaviour
 
     public abstract void StartCondition();
     public abstract void EndCondition();
+    [SerializeField]
+    private GoalInteractor[] _interactors;
+    protected abstract void StartRoutine();
+
+    private void Start()
+    {
+        StartRoutine();
+        foreach (GoalInteractor _interactor in _interactors)
+        {
+            _interactor.onGoalHappened += onGoalHappened;
+        }
+
+    }
+
+
 }

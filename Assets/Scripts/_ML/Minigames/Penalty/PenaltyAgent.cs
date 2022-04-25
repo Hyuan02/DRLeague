@@ -10,12 +10,6 @@ public class PenaltyAgent : CarAgent
 
     [SerializeField]
     RuleManager _gameManager;
-    [SerializeField]
-    CarManager _carInstance;
-    [SerializeField]
-    BallManager _ballInstance;
-    [SerializeField]
-    Transform _goalpost;
 
     [SerializeField]
     float timeToWaitBeforeRestart = 15f;
@@ -48,51 +42,35 @@ public class PenaltyAgent : CarAgent
         this.AddReward(-0.01f);
     }
 
-
-    public override void CollectObservations(VectorSensor sensor)
+    public override void TransmitObservations(VectorSensor sensor)
     {
-        TransmitObservations(sensor);
-    }
-
-
-
-
-    private void TransmitObservations(VectorSensor sensor)
-    {
-        if (_carInstance)
+        if (carInstance)
         {
             //car spacial stats 
-            sensor.AddObservation(_carInstance.stats.isCanDrive);
-            sensor.AddObservation(_carInstance.stats.isBodySurface);
-            //sensor.AddObservation(_carInstance.stats.isAllWheelsSurface);
-            sensor.AddObservation(_carInstance.stats.wheelsSurface);
-            //sensor.AddObservation(_carInstance.canMove);
+            sensor.AddObservation(carInstance.stats.isCanDrive);
+            sensor.AddObservation(carInstance.stats.isBodySurface);
+            sensor.AddObservation(carInstance.stats.wheelsSurface);
             //car jump stats
-            //sensor.AddObservation(_carInstance.stats.canFirstJump);
-            //sensor.AddObservation(_carInstance.stats.canKeepJumping);
-            sensor.AddObservation(_carInstance.stats.isJumping);
+            sensor.AddObservation(carInstance.stats.isJumping);
             //car boost stats
-            sensor.AddObservation(_carInstance.stats.boostQuantity);
-            sensor.AddObservation(_carInstance.stats.isBoosting);
+            sensor.AddObservation(carInstance.stats.boostQuantity);
+            sensor.AddObservation(carInstance.stats.isBoosting);
             //car move stats
-            sensor.AddObservation(_carInstance.stats.forwardSpeedSign);
-            sensor.AddObservation((_carInstance.stats.forwardSpeedAbs - 0) / (Constants.Instance.MaxSpeed));
-            //sensor.AddObservation(_carInstance.stats.forwardSpeed);
-            sensor.AddObservation(_carInstance.stats.currentSteerAngle);
-
+            sensor.AddObservation(carInstance.stats.forwardSpeedSign);
+            sensor.AddObservation((carInstance.stats.forwardSpeedAbs - 0) / (Constants.Instance.MaxSpeed));
+            sensor.AddObservation(carInstance.stats.currentSteerAngle);
             //car transform stats
-            //sensor.AddObservation(_carInstance.transform.localPosition);
-            sensor.AddObservation(_carInstance.transform.eulerAngles / 360.0f);
+            sensor.AddObservation(carInstance.transform.eulerAngles / 360.0f);
         }
 
-        if (_ballInstance)
+        if (ballInstance)
         {
-            sensor.AddObservation(_carInstance.transform.position - _ballInstance.transform.position);
+            sensor.AddObservation(carInstance.transform.position - ballInstance.transform.position);
         }
 
-        if (_goalpost)
+        if (goalpost)
         {
-            sensor.AddObservation(_ballInstance.transform.position - _goalpost.position);
+            sensor.AddObservation(ballInstance.transform.position - goalpost.position);
         }
     }
 

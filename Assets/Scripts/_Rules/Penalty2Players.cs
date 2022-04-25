@@ -13,7 +13,7 @@ public class Penalty2Players : RuleManager, IPenaltyInteractions
     BallManager _ball;
 
     [SerializeField]
-    CinemachineVirtualCamera camera;
+    new CinemachineVirtualCamera camera;
 
     uint[] goalscore = new uint[2];
 
@@ -124,4 +124,9 @@ public class Penalty2Players : RuleManager, IPenaltyInteractions
 
 
     private Vector3 GenerateRandomBallPosition() => new Vector3(0, 0, UnityEngine.Random.Range(minBallZRange, maxBallZRange));
+
+    protected override void StartRoutine()
+    {
+        throw new NotImplementedException();
+    }
 }

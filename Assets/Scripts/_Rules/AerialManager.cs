@@ -150,4 +150,9 @@ public class AerialManager : RuleManager
         }
     }
     private Vector3 GenerateBallAirPosition() => new Vector3(26, 1f, Random.Range(ballZMin, ballZMax));
+
+    protected override void StartRoutine()
+    {
+        throw new System.NotImplementedException();
+    }
 }

@@ -40,15 +40,7 @@ public class PenaltyAgentCompetitiveContinuuous : CarAgent
         this.AddReward(-0.01f);
     }
 
-
-    public override void CollectObservations(VectorSensor sensor)
-    {
-        TransmitObservations(sensor);
-    }
-
-
-
-    private void TransmitObservations(VectorSensor sensor)
+    public override void TransmitObservations(VectorSensor sensor)
     {
         if (_carInstance)
         {

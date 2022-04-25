@@ -17,7 +17,7 @@ public class PenaltyCompetitiveOpposite : RuleManager, IPenaltyInteractions
     BallManager _ball;
 
     [SerializeField]
-    CinemachineVirtualCamera camera;
+    new CinemachineVirtualCamera camera;
 
     uint[] goalscore = new uint[2];
 
@@ -231,5 +231,10 @@ public class PenaltyCompetitiveOpposite : RuleManager, IPenaltyInteractions
             StartCondition();
         }
 
+    }
+
+    protected override void StartRoutine()
+    {
+        throw new NotImplementedException();
     }
 }

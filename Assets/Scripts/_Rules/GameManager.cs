@@ -9,8 +9,6 @@ public class GameManager : RuleManager
 
     public GameStats mainStats;
 
-    public Action<TeamInfo, GoalInfo> onGoalHappened;
-
     private void Awake()
     {
         StartCondition();
@@ -39,6 +37,11 @@ public class GameManager : RuleManager
     }
 
     public override void EndCondition()
+    {
+        throw new NotImplementedException();
+    }
+
+    protected override void StartRoutine()
     {
         throw new NotImplementedException();
     }

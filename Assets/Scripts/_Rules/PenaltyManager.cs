@@ -34,7 +34,7 @@ public class PenaltyManager : RuleManager, IPenaltyInteractions
 
 
 
-    void Start()
+    protected override void StartRoutine()
     {
         onGoalHappened += ReceiveGoal;
         StartCondition();

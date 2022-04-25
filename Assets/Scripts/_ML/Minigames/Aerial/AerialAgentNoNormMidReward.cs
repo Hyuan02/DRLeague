@@ -1,11 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using Unity.MLAgents;
 using Unity.MLAgents.Actuators;
 using Unity.MLAgents.Sensors;
 
@@ -61,13 +54,7 @@ public class AerialAgentNoNormMidReward : CarAgent
     }
 
 
-    public override void CollectObservations(VectorSensor sensor)
-    {
-        TransmitObservations(sensor);
-    }
-
-
-    private void TransmitObservations(VectorSensor sensor)
+    public override void TransmitObservations(VectorSensor sensor)
     {
         if (_carInstance)
         {

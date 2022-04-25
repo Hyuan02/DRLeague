@@ -9,7 +9,7 @@ public class CarParticleSystem : MonoBehaviour
     private CarManager _instance;
 
     private TrailRenderer[] _trails;
-    bool _isBoosting = false;
+    private bool _isBoosting = false;
 
 
     private void Start()
