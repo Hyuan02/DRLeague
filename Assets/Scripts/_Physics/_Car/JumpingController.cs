@@ -35,18 +35,18 @@ public class JumpingController : MonoBehaviour
         if(hasJumpingInput && _instance.stats.canFirstJump)
         {
             _instance.stats.canFirstJump = false;
-            _rBody.AddForce(transform.up * Constants.InitalJumpTorque * Constants.JumpForceMultiplier, ForceMode.VelocityChange);
+            _rBody.AddForce(transform.up * _instance.carData.InitalJumpTorque * _instance.carData.JumpForceMultiplier, ForceMode.VelocityChange);
             _instance.stats.canKeepJumping = true;
             _instance.stats.isJumping = true;
         }
 
         if (hasJumpingInput && _instance.stats.isJumping && _instance.stats.canKeepJumping && _jumpTimer >= 0.05f && _jumpTimer <= 0.14f)
         {
-            _rBody.AddForce(transform.up * Constants.MidJumpTorque * Constants.JumpForceMultiplier, ForceMode.Acceleration);
+            _rBody.AddForce(transform.up * _instance.carData.MidJumpTorque * _instance.carData.JumpForceMultiplier, ForceMode.Acceleration);
         }
 
         if (hasJumpingInput && _instance.stats.isJumping && _jumpTimer >= 0.2f && _instance.stats.canDoubleJump && !_instance.stats.hasDoubleJump) {
-            _rBody.AddForce(transform.up * Constants.InitalJumpTorque * Constants.JumpForceMultiplier, ForceMode.VelocityChange);
+            _rBody.AddForce(transform.up * _instance.carData.InitalJumpTorque * _instance.carData.JumpForceMultiplier, ForceMode.VelocityChange);
             _instance.stats.canDoubleJump = false;
             _instance.stats.hasDoubleJump = true;
         }

@@ -50,7 +50,7 @@ public class CarParticleSystem : MonoBehaviour
 
     private void HandleParticleFX()
     {
-        if(_instance.stats.forwardSpeed >= Constants.SupersonicThreshold)
+        if(_instance.stats.forwardSpeed >= EnvironmentConstants.SupersonicThreshold)
         {
             _windParticles.Play();
 

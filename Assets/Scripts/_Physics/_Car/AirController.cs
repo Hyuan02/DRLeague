@@ -7,6 +7,7 @@ public class AirController : MonoBehaviour
 {
     private Rigidbody _rBody;
     private CarManager _instance;
+    [SerializeField]
     private bool _useDamperTorque = true;
 
 
@@ -27,15 +28,15 @@ public class AirController : MonoBehaviour
     void DoRotation(float yawInput, float pitchInput)
     {
         //pitch
-        _rBody.AddTorque(Constants.Torque_Pitch * pitchInput * transform.right, ForceMode.Acceleration);
+        _rBody.AddTorque(EnvironmentConstants.Torque_Pitch * pitchInput * transform.right, ForceMode.Acceleration);
         if (_useDamperTorque)
-            _rBody.AddTorque(transform.right * Constants.Drag_Pitch * (1 - Mathf.Abs(pitchInput)) * transform.InverseTransformDirection(_rBody.angularVelocity).x
+            _rBody.AddTorque(transform.right * EnvironmentConstants.Drag_Pitch * (1 - Mathf.Abs(pitchInput)) * transform.InverseTransformDirection(_rBody.angularVelocity).x
                 , ForceMode.Acceleration);
 
         //yaw
-        _rBody.AddTorque(Constants.Torque_Yaw * yawInput * transform.up, ForceMode.Acceleration);
+        _rBody.AddTorque(EnvironmentConstants.Torque_Yaw * yawInput * transform.up, ForceMode.Acceleration);
         if (_useDamperTorque)
-            _rBody.AddTorque(transform.up * Constants.Drag_Yaw * (1 - Mathf.Abs(yawInput)) * transform.InverseTransformDirection(_rBody.angularVelocity).y,
+            _rBody.AddTorque(transform.up * EnvironmentConstants.Drag_Yaw * (1 - Mathf.Abs(yawInput)) * transform.InverseTransformDirection(_rBody.angularVelocity).y,
                 ForceMode.Acceleration);
 
     }

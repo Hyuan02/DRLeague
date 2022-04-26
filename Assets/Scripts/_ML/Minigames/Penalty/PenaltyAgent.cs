@@ -57,7 +57,7 @@ public class PenaltyAgent : CarAgent
             sensor.AddObservation(carInstance.stats.isBoosting);
             //car move stats
             sensor.AddObservation(carInstance.stats.forwardSpeedSign);
-            sensor.AddObservation((carInstance.stats.forwardSpeedAbs - 0) / (Constants.Instance.MaxSpeed));
+            sensor.AddObservation((carInstance.stats.forwardSpeedAbs - 0) / (+carInstance.carData.MaxSpeed));
             sensor.AddObservation(carInstance.stats.currentSteerAngle);
             //car transform stats
             sensor.AddObservation(carInstance.transform.eulerAngles / 360.0f);

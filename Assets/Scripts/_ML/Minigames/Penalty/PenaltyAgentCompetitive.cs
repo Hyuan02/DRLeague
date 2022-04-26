@@ -124,7 +124,7 @@ public class PenaltyAgentCompetitive : Agent, IInputSignals
             sensor.AddObservation(_carInstance.stats.isBoosting);
             //car move stats
             sensor.AddObservation(_carInstance.stats.forwardSpeedSign);
-            sensor.AddObservation((_carInstance.stats.forwardSpeedAbs - 0) / (Constants.Instance.MaxSpeed));
+            sensor.AddObservation((_carInstance.stats.forwardSpeedAbs - 0) / (_carInstance.carData.MaxSpeed));
             //sensor.AddObservation(_carInstance.stats.forwardSpeed);
             sensor.AddObservation(_carInstance.stats.currentSteerAngle);
 

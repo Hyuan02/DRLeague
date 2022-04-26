@@ -26,6 +26,9 @@ public class CarManager : MonoBehaviour
     [SerializeField]
     internal SignalClient signalClient;
 
+    [SerializeField]
+    internal CarModelData carData;
+
     private Vector3 _defaultPosition;
     private Quaternion _defaultRotation;
 
@@ -35,11 +38,11 @@ public class CarManager : MonoBehaviour
     {
         rBody = this.GetComponent<Rigidbody>();
         rBody.centerOfMass = cogLow.localPosition;
-        rBody.maxAngularVelocity = Constants.MaxAngularVelocity;
+        rBody.maxAngularVelocity = carData.MaxAngularVelocity;
 
         _defaultPosition = this.transform.localPosition;
         _defaultRotation = this.transform.localRotation;
-        stats.boostQuantity = Constants.InitialBoostQuantity;
+        stats.boostQuantity = carData.InitialBoostQuantity;
     }
 
 
@@ -69,12 +72,12 @@ public class CarManager : MonoBehaviour
             stats.CarState = CarState.BodySideGround;
         }
 
-        if (stats.isAllWheelsSurface && Vector3.Dot(Vector3.up, transform.up) > Constants.Instance.NormalLength)
+        if (stats.isAllWheelsSurface && Vector3.Dot(Vector3.up, transform.up) > carData.NormalLength)
         {
             stats.CarState = CarState.AllWheelsGround;
         }
 
-        if (stats.isBodySurface && Vector3.Dot(Vector3.up, transform.up) < -Constants.Instance.NormalLength)
+        if (stats.isBodySurface && Vector3.Dot(Vector3.up, transform.up) < -carData.NormalLength)
         {
             stats.CarState = CarState.BodyGroundDead;
         }

@@ -15,9 +15,8 @@ public class WheelController : MonoBehaviour
 {
 
     [SerializeField]
-    private GroundController _controller;
-    [SerializeField]
     private CarManager _manager;
+
     private Rigidbody _rBody;
 
     [SerializeField]
@@ -26,20 +25,15 @@ public class WheelController : MonoBehaviour
     [SerializeField]
     private WheelPosition _wheelPosition;
 
-
     private float _meshRevolutionAngle;
 
-    private float _forceCurve = 0;
-
-
     private float _wheelRadius, _wheelForwardVelocity, _wheelLateralVelocity;
-    Vector3 _wheelVelocity, _lastWheelVelocity, _wheelAcceleration, _wheelContactPoint, _lateralForcePosition = Vector3.zero;
+    private Vector3 _wheelVelocity, _lastWheelVelocity, _wheelAcceleration, _wheelContactPoint, _lateralForcePosition = Vector3.zero;
 
     private void Start()
     {
         _manager = this.GetComponentInParent<CarManager>();
         _rBody = _manager.rBody;
-        _controller = this.GetComponentInParent<GroundController>();
         _wheelRadius = transform.localScale.z / 2;
     }
 
@@ -83,11 +77,11 @@ public class WheelController : MonoBehaviour
 
     private void ApplySideForce()
     {
-        _forceCurve = _wheelLateralVelocity * _manager.stats.currentWheelSideFriction;
+        float force_curve = _wheelLateralVelocity * _manager.stats.currentWheelSideFriction;
         _lateralForcePosition = transform.localPosition;
         _lateralForcePosition.y = _manager.cogLow.localPosition.y;
         _lateralForcePosition = _manager.transform.TransformPoint(_lateralForcePosition);
-        _rBody.AddForceAtPosition(-_forceCurve * transform.right, _lateralForcePosition, ForceMode.Acceleration);
+        _rBody.AddForceAtPosition(-force_curve * transform.right, _lateralForcePosition, ForceMode.Acceleration);
     }
 
     private void SimulateDrag()
@@ -98,7 +92,7 @@ public class WheelController : MonoBehaviour
 
     private void AddDragForce()
     {
-        float dragForce = Constants.BrakeAcceleration / 4 * _manager.stats.forwardSpeedSign * (1 - _manager.signalClient.GetForwardSignal());
+        float dragForce = _manager.carData.BrakeAcceleration / 4 * _manager.stats.forwardSpeedSign * (1 - _manager.signalClient.GetForwardSignal());
         _rBody.AddForce(-dragForce * transform.forward, ForceMode.Acceleration);
     }
 
