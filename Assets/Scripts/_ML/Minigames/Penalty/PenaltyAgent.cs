@@ -11,28 +11,11 @@ public class PenaltyAgent : CarAgent
     [SerializeField]
     RuleManager _gameManager;
 
-    [SerializeField]
-    float timeToWaitBeforeRestart = 15f;
-    float _timeWaitedToRestart = 0f;
-
-
-
     void Start()
     {
         _gameManager.onGoalHappened += RewardCondition;
         _gameManager.onGameStarted += StartRoutine;
         _gameManager.onGameFinished += BadEndRoutine;
-    }
-
-    void FixedUpdate()
-    {
-        CountTimeToRestart();
-    }
-
-    public override void OnEpisodeBegin()
-    {
-        //Debug.Log("Begin episode!");
-        _timeWaitedToRestart = 0;
     }
 
     public override void OnActionReceived(ActionBuffers actionBuffers)
@@ -89,17 +72,6 @@ public class PenaltyAgent : CarAgent
     {
         this.AddReward(-10f);
         EndEpisode();
-    }
-
-    private void CountTimeToRestart()
-    {
-        _timeWaitedToRestart += Time.fixedDeltaTime;
-        if (_timeWaitedToRestart >= timeToWaitBeforeRestart)
-        {
-            _gameManager.EndCondition();
-            _gameManager.StartCondition();
-        }
-
     }
 
     public override void Heuristic(in ActionBuffers actionsOut)

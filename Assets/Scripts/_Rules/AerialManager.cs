@@ -21,21 +21,14 @@ public class AerialManager : RuleManager
     float timeToWaitBeforeDrop = 2f;
     float _timeWaited = 0f;
 
-    [SerializeField]
-    float timeToWaitBeforeRestart = 10f;
-    float _timeWaitedToRestart = 0f;
-
     uint _numberOfGoals = 0;
 
     bool _waitingToDrop = false;
-    bool _waitingToRestart = false;
 
 
     public System.Action onRestartGame;
     public System.Action onGoalReceived;
     public System.Action onValidGoal;
-
-    private AerialWatcher _watcher;
 
     [SerializeField]
     private Text _scoreText;
@@ -51,7 +44,6 @@ public class AerialManager : RuleManager
     private void FixedUpdate()
     {
         CountTimeToDrop();
-        CountTimeToRestart();
     }
 
 
@@ -80,7 +72,7 @@ public class AerialManager : RuleManager
         _ballInstance.FreezeBall();
     }
 
-    void ReceiveGoal(TeamInfo info, GoalInfo goal)
+    protected override void ReceiveGoal(TeamInfo info, GoalInfo goal)
     {
         onGoalReceived?.Invoke();
     }
@@ -110,28 +102,13 @@ public class AerialManager : RuleManager
                 _timeWaited = 0;
                 _ballInstance.UnFreezeBall();
                 _waitingToDrop = false;
-                _waitingToRestart = true;
             }
         }
     }
 
-    private void CountTimeToRestart()
-    {
-        if (_waitingToRestart)
-        {
-            _timeWaitedToRestart += Time.fixedDeltaTime;
-            if(_timeWaitedToRestart >= timeToWaitBeforeRestart)
-            {
-                EndCondition();
-                StartCondition();
-            }
-        }
-    }
 
     private void RestartTimeCounter()
     {
-        _timeWaitedToRestart = 0;
-        _waitingToRestart = false;
         _waitingToDrop = false;
         _timeWaited = 0;
     }

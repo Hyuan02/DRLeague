@@ -43,6 +43,7 @@ public class PenaltyManager : RuleManager, IPenaltyInteractions
     
     public override void StartCondition()
     {
+        base.StartCondition();
         RandomizeCarPosition();
         RandomizeBallPosition();
         onGameStarted?.Invoke();
@@ -53,7 +54,7 @@ public class PenaltyManager : RuleManager, IPenaltyInteractions
         onGameFinished?.Invoke();
     }
 
-    void ReceiveGoal(TeamInfo info, GoalInfo goal)
+    protected override void ReceiveGoal(TeamInfo info, GoalInfo goal)
     {
         Debug.Log("GOAAAAAAAAAAAL!");
         StartCondition();

@@ -20,9 +20,6 @@ public class PenaltyAgentDistant : Agent, IInputSignals
     ActionSegment<float> currentContinousActions = ActionSegment<float>.Empty;
     ActionSegment<int> currentDiscreteActions = ActionSegment<int>.Empty;
 
-    [SerializeField]
-    float timeToWaitBeforeRestart = 15f;
-    float _timeWaitedToRestart = 0f;
     float previousDistance = float.MaxValue;
 
 
@@ -32,17 +29,6 @@ public class PenaltyAgentDistant : Agent, IInputSignals
         _gameManager.onGoalHappened += RewardCondition;
         _gameManager.onGameStarted += StartRoutine;
         _gameManager.onGameFinished += BadEndRoutine;
-    }
-
-    void FixedUpdate()
-    {
-        CountTimeToRestart();
-    }
-
-    public override void OnEpisodeBegin()
-    {
-        //Debug.Log("Begin episode!");
-        _timeWaitedToRestart = 0;
     }
 
     public override void OnActionReceived(ActionBuffers actionBuffers)
@@ -131,17 +117,6 @@ public class PenaltyAgentDistant : Agent, IInputSignals
     {
         this.AddReward(-10f);
         EndEpisode();
-    }
-
-    private void CountTimeToRestart()
-    {
-        _timeWaitedToRestart += Time.fixedDeltaTime;
-        if (_timeWaitedToRestart >= timeToWaitBeforeRestart)
-        {
-            _gameManager.EndCondition();
-            _gameManager.StartCondition();
-        }
-
     }
 
     public override void Heuristic(in ActionBuffers actionsOut)

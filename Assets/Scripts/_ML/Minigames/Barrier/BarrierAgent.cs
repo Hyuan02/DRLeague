@@ -18,12 +18,6 @@ public class BarrierAgent : CarAgent
     [SerializeField]
     Transform _goalpost;
 
-
-   
-    [SerializeField]
-    float timeToWaitBeforeRestart = 15f;
-    float _timeWaitedToRestart = 0f;
-
     void Start()
     {
         _gameManager.onGoalHappened += RewardCondition;
@@ -31,17 +25,7 @@ public class BarrierAgent : CarAgent
         _gameManager.onGameFinished += BadEndRoutine;
     }
 
-    void FixedUpdate()
-    {
-        CountTimeToRestart();
-    }
-
-    public override void OnEpisodeBegin()
-    {
-        //Debug.Log("Begin episode!");
-        _timeWaitedToRestart = 0;
-    }
-
+  
     public override void OnActionReceived(ActionBuffers actionBuffers)
     {
         //Debug.Log("Getting actions!");
@@ -108,17 +92,6 @@ public class BarrierAgent : CarAgent
     {
         this.AddReward(-10f);
         EndEpisode();
-    }
-
-    private void CountTimeToRestart()
-    {
-        _timeWaitedToRestart += Time.fixedDeltaTime;
-        if (_timeWaitedToRestart >= timeToWaitBeforeRestart)
-        {
-            _gameManager.EndCondition();
-            _gameManager.StartCondition();
-        }
-
     }
 
 }

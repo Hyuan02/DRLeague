@@ -61,7 +61,7 @@ public class Penalty2Players : RuleManager, IPenaltyInteractions
         onGameFinished?.Invoke();
     }
 
-    void ReceiveGoal(TeamInfo info, GoalInfo goal)
+    protected override void ReceiveGoal(TeamInfo info, GoalInfo goal)
     {
         Debug.Log("GOAAAAAAAAAAAL!");
         goalscore[(int)currentTeamInfo.team] += 1;

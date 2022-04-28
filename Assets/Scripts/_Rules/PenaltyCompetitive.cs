@@ -113,7 +113,7 @@ public class PenaltyCompetitive : RuleManager, IPenaltyInteractions
         redAgents.EndGroupEpisode();
     }
 
-    void ReceiveGoal(TeamInfo info, GoalInfo goal)
+    protected override void ReceiveGoal(TeamInfo info, GoalInfo goal)
     {
         Debug.Log("GOAAAAAAAAAAAL!");
         goalscore[(int)info.team] += 1;
