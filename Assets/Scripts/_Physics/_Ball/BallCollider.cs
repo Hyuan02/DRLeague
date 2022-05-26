@@ -11,7 +11,6 @@ public class BallCollider : MonoBehaviour
     private float _initialFactor = 400;
     [SerializeField]
     private float _collisionFactor = 50;
-    private bool _isTouchedGround = false;
     private Rigidbody _rBody;
 
     public bool IsBeingTouched { private set; get; } = false;
@@ -25,10 +24,6 @@ public class BallCollider : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Car")) {
             ApplyBehaviourWithCar(collision);
-        }
-        else if (collision.gameObject.CompareTag("Ground"))
-        {
-            ApplyBehaviourWithGround();
         }
     }
 
@@ -53,10 +48,5 @@ public class BallCollider : MonoBehaviour
         float forceToApply = _initialFactor + collision.rigidbody.velocity.magnitude * _collisionFactor;
         Vector3 dirOfCollision = (transform.position - collision.transform.position).normalized;
         _rBody.AddForce(dirOfCollision * forceToApply);
-    }
-
-    private void ApplyBehaviourWithGround()
-    {
-        _isTouchedGround = true;
     }
 }

@@ -1,0 +1,4 @@
+Assets/Scenes/MLScenes/MultiplayerScenes/PenaltySceneCompetitiveContinuous.unity filter=lfs diff=lfs merge=lfs -text
+Assets/Scenes/MLScenes/MultiplayerScenes/PenaltySceneCompetitive.unity filter=lfs diff=lfs merge=lfs -text
+Assets/Scenes/MLScenes/MultiplayerScenes/PenaltySceneCompetitiveContinuousOpposite.unity filter=lfs diff=lfs merge=lfs -text
+*.unity filter=lfs diff=lfs merge=lfs -text

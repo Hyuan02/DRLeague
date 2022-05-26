@@ -11,6 +11,9 @@ public class PenaltyManager : RuleManager, IPenaltyInteractions
     [SerializeField]
     BallManager _ball;
 
+    [SerializeField]
+    bool stopMove = true;
+
 
 
     [Header ("Car Random Atributtes")]
@@ -31,7 +34,7 @@ public class PenaltyManager : RuleManager, IPenaltyInteractions
 
 
 
-    void Start()
+    protected override void StartRoutine()
     {
         onGoalHappened += ReceiveGoal;
         StartCondition();
@@ -40,6 +43,7 @@ public class PenaltyManager : RuleManager, IPenaltyInteractions
     
     public override void StartCondition()
     {
+        base.StartCondition();
         RandomizeCarPosition();
         RandomizeBallPosition();
         onGameStarted?.Invoke();
@@ -50,7 +54,7 @@ public class PenaltyManager : RuleManager, IPenaltyInteractions
         onGameFinished?.Invoke();
     }
 
-    void ReceiveGoal(TeamInfo info, GoalInfo goal)
+    protected override void ReceiveGoal(TeamInfo info, GoalInfo goal)
     {
         Debug.Log("GOAAAAAAAAAAAL!");
         StartCondition();
@@ -61,8 +65,8 @@ public class PenaltyManager : RuleManager, IPenaltyInteractions
         _carAgent.ResetCarState();
         Vector3 newPosition = GenerateRandomCarPosition();
         newPosition.y = -7.1f;
-        _carAgent.SetToPositionAndRotation(newPosition, Quaternion.Euler(0,90,0));
-        _carAgent.canMove = true;
+        _carAgent.SetToPositionAndRotation(newPosition, null);
+        _carAgent.signalClient.CanEmitSignals = true;
     }
 
     void RandomizeBallPosition()
@@ -76,7 +80,8 @@ public class PenaltyManager : RuleManager, IPenaltyInteractions
 
     public void OnTouchedBall()
     {
-        _carAgent.canMove = false;
+        if(stopMove)
+            _carAgent.signalClient.CanEmitSignals = false;
     }
 
     public void OnStoppedBall()

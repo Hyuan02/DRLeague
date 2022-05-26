@@ -6,8 +6,6 @@ public class SphereColliders : MonoBehaviour
 {
 
     public bool isTouchingSurface { private set; get; }
-
-    float _wheelDiameter, _wheelOffset = 0.05f;
     // Start is called before the first frame update
     void Start()
     {

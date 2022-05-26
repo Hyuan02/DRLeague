@@ -13,7 +13,7 @@ public class Penalty2Players : RuleManager, IPenaltyInteractions
     BallManager _ball;
 
     [SerializeField]
-    CinemachineVirtualCamera camera;
+    new CinemachineVirtualCamera camera;
 
     uint[] goalscore = new uint[2];
 
@@ -61,7 +61,7 @@ public class Penalty2Players : RuleManager, IPenaltyInteractions
         onGameFinished?.Invoke();
     }
 
-    void ReceiveGoal(TeamInfo info, GoalInfo goal)
+    protected override void ReceiveGoal(TeamInfo info, GoalInfo goal)
     {
         Debug.Log("GOAAAAAAAAAAAL!");
         goalscore[(int)currentTeamInfo.team] += 1;
@@ -75,7 +75,7 @@ public class Penalty2Players : RuleManager, IPenaltyInteractions
         Vector3 newPosition = GenerateRandomCarPosition();
         newPosition.y = -7.1f;
         _carAgents[playerIndex].SetToPositionAndRotation(newPosition, Quaternion.Euler(0, 90, 0));
-        _carAgents[playerIndex].canMove = true;
+        _carAgents[playerIndex].signalClient.CanEmitSignals = true;
     }
 
     void RandomizeBallPosition()
@@ -89,7 +89,7 @@ public class Penalty2Players : RuleManager, IPenaltyInteractions
 
     public void OnTouchedBall()
     {
-        _carAgents[playerIndex].canMove = false;
+        _carAgents[playerIndex].signalClient.CanEmitSignals = false;
     }
 
     public void OnStoppedBall()
@@ -124,4 +124,9 @@ public class Penalty2Players : RuleManager, IPenaltyInteractions
 
 
     private Vector3 GenerateRandomBallPosition() => new Vector3(0, 0, UnityEngine.Random.Range(minBallZRange, maxBallZRange));
+
+    protected override void StartRoutine()
+    {
+        throw new NotImplementedException();
+    }
 }

@@ -5,7 +5,7 @@ using Unity.MLAgents;
 using Unity.MLAgents.Actuators;
 using Unity.MLAgents.Sensors;
 
-public class BarrierAgent : Agent, IInputSignals
+public class BarrierAgent : CarAgent
 {
     [SerializeField]
     RuleManager _gameManager;
@@ -18,14 +18,6 @@ public class BarrierAgent : Agent, IInputSignals
     [SerializeField]
     Transform _goalpost;
 
-
-    ActionSegment<float> currentContinousActions = ActionSegment<float>.Empty;
-    ActionSegment<int> currentDiscreteActions = ActionSegment<int>.Empty;
-
-    [SerializeField]
-    float timeToWaitBeforeRestart = 15f;
-    float _timeWaitedToRestart = 0f;
-
     void Start()
     {
         _gameManager.onGoalHappened += RewardCondition;
@@ -33,42 +25,18 @@ public class BarrierAgent : Agent, IInputSignals
         _gameManager.onGameFinished += BadEndRoutine;
     }
 
-    void FixedUpdate()
-    {
-        CountTimeToRestart();
-    }
-
-    public override void OnEpisodeBegin()
-    {
-        //Debug.Log("Begin episode!");
-        _timeWaitedToRestart = 0;
-    }
-
+  
     public override void OnActionReceived(ActionBuffers actionBuffers)
     {
         //Debug.Log("Getting actions!");
-        currentContinousActions = actionBuffers.ContinuousActions;
-        currentDiscreteActions = actionBuffers.DiscreteActions;
+        base.OnActionReceived(actionBuffers);
 
         this.AddReward(-0.01f);
     }
+    
 
 
-    public override void CollectObservations(VectorSensor sensor)
-    {
-        TransmitObservations(sensor);
-    }
-
-    #region INPUTS_IMPLEMENTATIONS
-    public float GetForwardSignal() => currentContinousActions.Length > 0 ? currentContinousActions[0] : 0;
-    public float GetTurnSignal() => currentContinousActions.Length > 0 ? currentContinousActions[1] : 0;
-    public bool GetJumpSignal() => currentDiscreteActions.Length > 0 ? (currentDiscreteActions[0] > 0 ? true : false) : false;
-    public bool GetBoostSignal() => currentDiscreteActions.Length > 0 ? (currentDiscreteActions[1] > 0 ? true : false) : false;
-    public bool GetDriftSignal() => currentDiscreteActions.Length > 0 ? (currentDiscreteActions[2] > 0 ? true : false) : false;
-    #endregion
-
-
-    private void TransmitObservations(VectorSensor sensor)
+    public override void TransmitObservations(VectorSensor sensor)
     {
         if (_carInstance)
         {
@@ -84,7 +52,7 @@ public class BarrierAgent : Agent, IInputSignals
             sensor.AddObservation(_carInstance.stats.isBoosting);
             //car move stats
             sensor.AddObservation((_carInstance.stats.forwardSpeedSign + 1)/2);
-            sensor.AddObservation((_carInstance.stats.forwardSpeed) / (Constants.Instance.MaxSpeed));
+            sensor.AddObservation((_carInstance.stats.forwardSpeed) / (_carInstance.carData.MaxSpeed));
             sensor.AddObservation(_carInstance.stats.currentSteerAngle/34.5f);
 
             //car transform stats
@@ -124,17 +92,6 @@ public class BarrierAgent : Agent, IInputSignals
     {
         this.AddReward(-10f);
         EndEpisode();
-    }
-
-    private void CountTimeToRestart()
-    {
-        _timeWaitedToRestart += Time.fixedDeltaTime;
-        if (_timeWaitedToRestart >= timeToWaitBeforeRestart)
-        {
-            _gameManager.EndCondition();
-            _gameManager.StartCondition();
-        }
-
     }
 
 }

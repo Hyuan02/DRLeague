@@ -13,21 +13,19 @@ public class PenaltyInteractor : MonoBehaviour
 
 
     [SerializeField]
-    RuleManager _instance;
+    private RuleManager _instance;
 
     [SerializeField]
-    IPenaltyInteractions _interactor;
+    private IPenaltyInteractions _interactor;
 
     [SerializeField]
-    Rigidbody _rBody;
+    private Rigidbody _rBody;
 
-    private BallPenaltyState state;
+    private BallPenaltyState _state;
 
-    bool _touched;
-
-    bool _initiateCount;
-
-    uint secondsToCount = 7;
+    [Range(0,10)]
+    [SerializeField]
+    uint _secondsToCount = 7;
 
     float _secondsCounted = 0;
 
@@ -41,16 +39,16 @@ public class PenaltyInteractor : MonoBehaviour
     private void Start()
     {
         _rBody = this.GetComponentInParent<Rigidbody>();
-        state = BallPenaltyState.PRISTINE;
+        _state = BallPenaltyState.PRISTINE;
         _instance.onGoalHappened += ResetBallState;
         _instance.onGameFinished += ResetBallState;
     }
 
     private void FixedUpdate()
     {
-        if (state == BallPenaltyState.TOUCHED)
+        if (_state == BallPenaltyState.TOUCHED)
             AnalyzeBallSpeed();
-        else if (state == BallPenaltyState.ON_COUNT)
+        else if (_state == BallPenaltyState.ON_COUNT)
             CountTimeBeforeReset();
     }
 
@@ -59,7 +57,7 @@ public class PenaltyInteractor : MonoBehaviour
         if (other.CompareTag("BodyCollider") || other.CompareTag("SphereCollider"))
         {
             _interactor.OnTouchedBall();
-            state = BallPenaltyState.TOUCHED;
+            _state = BallPenaltyState.TOUCHED;
         }
     }
 
@@ -68,17 +66,17 @@ public class PenaltyInteractor : MonoBehaviour
         float velocity = _rBody.velocity.magnitude;
         if(velocity < 5)
         {
-            state = BallPenaltyState.ON_COUNT;
+            _state = BallPenaltyState.ON_COUNT;
         }
     }
 
     void CountTimeBeforeReset()
     {
         _secondsCounted += Time.fixedDeltaTime;
-        if(_secondsCounted > secondsToCount)
+        if(_secondsCounted > _secondsToCount)
         {
             _secondsCounted = 0;
-            state = BallPenaltyState.PRISTINE;
+            _state = BallPenaltyState.PRISTINE;
             _interactor.OnStoppedBall();
             
         }
@@ -87,13 +85,13 @@ public class PenaltyInteractor : MonoBehaviour
 
     void ResetBallState(TeamInfo info, GoalInfo infoGoal)
     {
-        state = BallPenaltyState.PRISTINE;
+        _state = BallPenaltyState.PRISTINE;
         _secondsCounted = 0;
     }
 
     void ResetBallState()
     {
-        state = BallPenaltyState.PRISTINE;
+        _state = BallPenaltyState.PRISTINE;
         _secondsCounted = 0;
     }
 }

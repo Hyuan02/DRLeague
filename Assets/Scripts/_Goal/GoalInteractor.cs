@@ -21,6 +21,8 @@ public class GoalInteractor : MonoBehaviour
 
     private void DetectGoalHit(TeamInfo info, GoalInfo goal)
     {
-        onGoalHappened.Invoke(info, goal);
+        if (_detail.team == info.team) { 
+            onGoalHappened.Invoke(info, goal);
+        }
     }
 }

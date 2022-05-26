@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerInputSignal : MonoBehaviour,IInputSignals
+public class PlayerInputSignal : IInputSignals
 {
     public float GetForwardSignal() => InputController.forwardInput;
 

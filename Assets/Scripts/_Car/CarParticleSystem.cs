@@ -9,7 +9,7 @@ public class CarParticleSystem : MonoBehaviour
     private CarManager _instance;
 
     private TrailRenderer[] _trails;
-    bool _isBoosting = false;
+    private bool _isBoosting = false;
 
 
     private void Start()
@@ -32,7 +32,7 @@ public class CarParticleSystem : MonoBehaviour
     }
     private void HandleAnimationBoost()
     {
-        if (_instance.GetBoostSignal() && _instance.stats.boostQuantity > 0) {
+        if (_instance.signalClient.GetBoostSignal() && _instance.stats.boostQuantity > 0) {
             if (!_isBoosting)
             {
                 _boostParticles.Play();
@@ -50,7 +50,7 @@ public class CarParticleSystem : MonoBehaviour
 
     private void HandleParticleFX()
     {
-        if(_instance.stats.forwardSpeed >= Constants.SupersonicThreshold)
+        if(_instance.stats.forwardSpeed >= EnvironmentConstants.SupersonicThreshold)
         {
             _windParticles.Play();
 

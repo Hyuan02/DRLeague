@@ -5,26 +5,11 @@ using Unity.MLAgents;
 using Unity.MLAgents.Actuators;
 using Unity.MLAgents.Sensors;
 
-public class PenaltyAgent : Agent, IInputSignals
+public class PenaltyAgent : CarAgent
 {
 
     [SerializeField]
     RuleManager _gameManager;
-    [SerializeField]
-    CarManager _carInstance;
-    [SerializeField]
-    BallManager _ballInstance;
-    [SerializeField]
-    Transform _goalpost;
-
-    ActionSegment<float> currentContinousActions = ActionSegment<float>.Empty;
-    ActionSegment<int> currentDiscreteActions = ActionSegment<int>.Empty;
-
-    [SerializeField]
-    float timeToWaitBeforeRestart = 15f;
-    float _timeWaitedToRestart = 0f;
-
-
 
     void Start()
     {
@@ -33,77 +18,42 @@ public class PenaltyAgent : Agent, IInputSignals
         _gameManager.onGameFinished += BadEndRoutine;
     }
 
-    void FixedUpdate()
-    {
-        CountTimeToRestart();
-    }
-
-    public override void OnEpisodeBegin()
-    {
-        //Debug.Log("Begin episode!");
-        _timeWaitedToRestart = 0;
-    }
-
     public override void OnActionReceived(ActionBuffers actionBuffers)
     {
         //Debug.Log("Getting actions!");
-        currentContinousActions = actionBuffers.ContinuousActions;
-        currentDiscreteActions = actionBuffers.DiscreteActions;
-
+        base.OnActionReceived(actionBuffers);
         this.AddReward(-0.01f);
     }
 
-
-    public override void CollectObservations(VectorSensor sensor)
+    public override void TransmitObservations(VectorSensor sensor)
     {
-        TransmitObservations(sensor);
-    }
-
-    #region INPUTS_IMPLEMENTATIONS
-    public float GetForwardSignal() => currentContinousActions.Length > 0? currentContinousActions[0] : 0;
-    public float GetTurnSignal() => currentContinousActions.Length > 0? currentContinousActions[1] : 0;
-    public bool GetJumpSignal() => currentDiscreteActions.Length > 0? (currentDiscreteActions[0] > 0?  true : false) : false;
-    public bool GetBoostSignal() => currentDiscreteActions.Length > 0 ? (currentDiscreteActions[1] > 0 ? true : false) : false;
-    public bool GetDriftSignal() => currentDiscreteActions.Length > 0 ? (currentDiscreteActions[2] > 0 ? true : false) : false;
-    #endregion
-
-
-    private void TransmitObservations(VectorSensor sensor)
-    {
-        if (_carInstance)
+        if (carInstance)
         {
             //car spacial stats 
-            sensor.AddObservation(_carInstance.stats.isCanDrive);
-            sensor.AddObservation(_carInstance.stats.isBodySurface);
-            //sensor.AddObservation(_carInstance.stats.isAllWheelsSurface);
-            sensor.AddObservation(_carInstance.stats.wheelsSurface);
-            //sensor.AddObservation(_carInstance.canMove);
+            sensor.AddObservation(carInstance.stats.isCanDrive);
+            sensor.AddObservation(carInstance.stats.isBodySurface);
+            sensor.AddObservation(carInstance.stats.wheelsSurface);
             //car jump stats
-            //sensor.AddObservation(_carInstance.stats.canFirstJump);
-            //sensor.AddObservation(_carInstance.stats.canKeepJumping);
-            sensor.AddObservation(_carInstance.stats.isJumping);
+            sensor.AddObservation(carInstance.stats.isJumping);
             //car boost stats
-            sensor.AddObservation(_carInstance.stats.boostQuantity);
-            sensor.AddObservation(_carInstance.stats.isBoosting);
+            sensor.AddObservation(carInstance.stats.boostQuantity);
+            sensor.AddObservation(carInstance.stats.isBoosting);
             //car move stats
-            sensor.AddObservation(_carInstance.stats.forwardSpeedSign);
-            sensor.AddObservation((_carInstance.stats.forwardSpeedAbs - 0) / (Constants.Instance.MaxSpeed));
-            //sensor.AddObservation(_carInstance.stats.forwardSpeed);
-            sensor.AddObservation(_carInstance.stats.currentSteerAngle);
-
+            sensor.AddObservation(carInstance.stats.forwardSpeedSign);
+            sensor.AddObservation((carInstance.stats.forwardSpeedAbs - 0) / (+carInstance.carData.MaxSpeed));
+            sensor.AddObservation(carInstance.stats.currentSteerAngle);
             //car transform stats
-            //sensor.AddObservation(_carInstance.transform.localPosition);
-            sensor.AddObservation(_carInstance.transform.eulerAngles / 360.0f);
+            sensor.AddObservation(carInstance.transform.eulerAngles / 360.0f);
         }
 
-        if (_ballInstance)
+        if (ballInstance)
         {
-            sensor.AddObservation(_carInstance.transform.position - _ballInstance.transform.position);
+            sensor.AddObservation(carInstance.transform.position - ballInstance.transform.position);
         }
 
-        if (_goalpost)
+        if (goalpost)
         {
-            sensor.AddObservation(_ballInstance.transform.position - _goalpost.position);
+            sensor.AddObservation(ballInstance.transform.position - goalpost.position);
         }
     }
 
@@ -124,14 +74,19 @@ public class PenaltyAgent : Agent, IInputSignals
         EndEpisode();
     }
 
-    private void CountTimeToRestart()
+    public override void Heuristic(in ActionBuffers actionsOut)
     {
-        _timeWaitedToRestart += Time.fixedDeltaTime;
-        if (_timeWaitedToRestart >= timeToWaitBeforeRestart)
-        {
-            _gameManager.EndCondition();
-            _gameManager.StartCondition();
-        }
+        base.Heuristic(actionsOut);
 
+        var continousActions = actionsOut.ContinuousActions;
+
+        continousActions[0] = InputController.forwardInput;
+        continousActions[1] = InputController.turnInput;
+
+        var discreteActions = actionsOut.DiscreteActions;
+
+        discreteActions[0] = InputController.jumpInput ? 1 : 0;
+        discreteActions[1] = InputController.boostInput ? 1 : 0;
+        discreteActions[2] = InputController.GetDriftInput ? 1 : 0;
     }
 }

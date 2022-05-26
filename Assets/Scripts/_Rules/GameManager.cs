@@ -9,8 +9,6 @@ public class GameManager : RuleManager
 
     public GameStats mainStats;
 
-    public Action<TeamInfo, GoalInfo> onGoalHappened;
-
     private void Awake()
     {
         StartCondition();
@@ -27,7 +25,7 @@ public class GameManager : RuleManager
             mainStats.TimeSpent -= Time.unscaledDeltaTime;
     }
 
-    private void UpdateTeamScore(TeamInfo info, GoalInfo goal) {
+    protected override void ReceiveGoal(TeamInfo info, GoalInfo goal) {
         mainStats.goalScore[(int)goal.team] += 1;
     }
 
@@ -35,10 +33,15 @@ public class GameManager : RuleManager
     {
         mainStats.TimeSpent = TIME_ON_GAME;
         mainStats.goalScore = new uint[Enum.GetNames(typeof(Teams)).Length];
-        onGoalHappened += UpdateTeamScore;
+        onGoalHappened += ReceiveGoal;
     }
 
     public override void EndCondition()
+    {
+        throw new NotImplementedException();
+    }
+
+    protected override void StartRoutine()
     {
         throw new NotImplementedException();
     }

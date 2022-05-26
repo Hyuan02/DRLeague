@@ -86,7 +86,7 @@ public class AerialAgent : Agent, IInputSignals
             sensor.AddObservation(_carInstance.stats.isBoosting); // 0 a 1 
             //car move stats
             sensor.AddObservation((_carInstance.stats.forwardSpeedSign + 1)/2); 
-            sensor.AddObservation((_carInstance.stats.forwardSpeed)/(Constants.Instance.MaxSpeed));
+            sensor.AddObservation((_carInstance.stats.forwardSpeed)/(_carInstance.carData.MaxSpeed));
             sensor.AddObservation((_carInstance.stats.currentSteerAngle)/34.5f); // -34.5 a 34.5
 
             ///car transform stats
