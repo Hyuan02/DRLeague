@@ -1,7 +1,7 @@
 
-# RocketDRL
+# DRLeague
 
-RocketDRL is an environment developed for the training of Deep 
+DRLeague is an environment developed for the training of Deep 
 Reinforcement Learning Agents, inspired by the game Rocket League. 
 
 The environment was developed with the use of Unity ML-Agents
