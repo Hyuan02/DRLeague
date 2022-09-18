@@ -5,7 +5,8 @@ using System;
 
 public class GoalInteractor : MonoBehaviour
 {
-    public Action<TeamInfo, GoalInfo> onGoalHappened;
+    [SerializeField]
+    RuleManager _manager;
 
     [SerializeField]
     private GoalInfo _detail;
@@ -21,8 +22,6 @@ public class GoalInteractor : MonoBehaviour
 
     private void DetectGoalHit(TeamInfo info, GoalInfo goal)
     {
-        if (_detail.team == info.team) { 
-            onGoalHappened.Invoke(info, goal);
-        }
+       _manager.onGoalHappened.Invoke(info, goal);
     }
 }

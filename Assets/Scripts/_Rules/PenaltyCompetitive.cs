@@ -48,24 +48,6 @@ public class PenaltyCompetitive : RuleManager, IPenaltyInteractions
     [SerializeField]
     private float maxBallZRange = 5f;
 
-
-    [SerializeField]
-    float timeToWaitBeforeRestart = 15f;
-    float _timeWaitedToRestart = 0f;
-
-    void Start()
-    {
-        RegisterTeams();
-        onGoalHappened += ReceiveGoal;
-        StartCondition();
-    }
-
-
-    void FixedUpdate()
-    {
-        CountTimeToRestart();
-    }
-
     void RegisterTeams()
     {
         blueAgents = new SimpleMultiAgentGroup();
@@ -90,18 +72,17 @@ public class PenaltyCompetitive : RuleManager, IPenaltyInteractions
 
     public override void StartCondition()
     {
-        //this.ChoosePlayer();
+        base.StartCondition();
         RandomizeCarPosition();
         RandomizeBallPosition();
         onGameStarted?.Invoke();
-        _timeWaitedToRestart = 0;
     }
 
     public override void EndCondition()
     {
         onGameFinished?.Invoke();
         AttributeBadReward();
-        
+        StartCondition();
     }
 
 
@@ -221,20 +202,10 @@ public class PenaltyCompetitive : RuleManager, IPenaltyInteractions
 
     private Vector3 GenerateRandomBallPosition() => new Vector3(0, 0, UnityEngine.Random.Range(minBallZRange, maxBallZRange));
 
-
-    private void CountTimeToRestart()
-    {
-        _timeWaitedToRestart += Time.fixedDeltaTime;
-        if (_timeWaitedToRestart >= timeToWaitBeforeRestart)
-        {
-            EndCondition();
-            StartCondition();
-        }
-
-    }
-
     protected override void StartRoutine()
     {
-        throw new NotImplementedException();
+        base.onGoalHappened += ReceiveGoal;
+        RegisterTeams();
+        StartCondition();
     }
 }

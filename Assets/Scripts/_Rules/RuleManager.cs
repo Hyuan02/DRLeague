@@ -29,11 +29,6 @@ public abstract class RuleManager : MonoBehaviour
     private void Start()
     {
         StartRoutine();
-        foreach (GoalInteractor _interactor in _interactors)
-        {
-            _interactor.onGoalHappened += onGoalHappened;
-        }
-
     }
 
     private void FixedUpdate()
