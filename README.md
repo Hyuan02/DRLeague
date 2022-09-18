@@ -53,6 +53,8 @@ To be added.
   
 ## License
 
-To be added.
+The car, arena models and the RoboUtils script are made by [Roboleague](https://github.com/roboserg/RoboLeague), under the license [CC BY-NC 4.0](https://creativecommons.org/licenses/by-nc/4.0/deed.en). 
+
+The project is licensed under the [MIT license](https://github.com/Hyuan02/DRLeague/blob/main/LICENSE). 
 
   
